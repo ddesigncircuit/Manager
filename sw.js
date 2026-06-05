@@ -1,66 +1,29 @@
-// THE DESIGN CIRCUIT — Service Worker
-// Bump CACHE version to force a hard refresh
-const CACHE = 'tdc-v1';
+const CACHE = 'tdc-v2';
+const STATIC = ['/', '/index.html', '/manifest.json'];
 
-const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
-];
-
-// INSTALL — precache critical assets
-self.addEventListener('install', event => {
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)));
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE).then(cache => {
-      return Promise.allSettled(
-        PRECACHE_URLS.map(url => cache.add(url).catch(err => console.warn('[SW] Failed to cache:', url, err)))
-      );
-    })
-  );
 });
 
-// ACTIVATE — purge old caches
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys =>
+    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+  ));
+  self.clients.claim();
 });
 
-// FETCH — network-first for Supabase, cache-first for everything else
-self.addEventListener('fetch', event => {
-  const url = event.request.url;
-
-  // Network-first for Supabase API calls
-  if (url.includes('supabase.co')) {
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return new Response(
-          JSON.stringify({ error: 'You appear to be offline. Please check your connection.' }),
-          { status: 503, headers: { 'Content-Type': 'application/json' } }
-        );
-      })
-    );
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+  if (url.hostname.includes('supabase.co') || url.hostname.includes('emailjs')) {
+    e.respondWith(fetch(e.request).catch(() => new Response('offline', { status: 503 })));
     return;
   }
-
-  // Cache-first for all other requests
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then(response => {
-          if (response && response.status === 200 && response.type === 'basic') {
-            const clone = response.clone();
-            caches.open(CACHE).then(cache => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match('/index.html'));
-    })
+  e.respondWith(
+    caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
+      const clone = res.clone();
+      caches.open(CACHE).then(c => c.put(e.request, clone));
+      return res;
+    }))
   );
 });
