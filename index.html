@@ -321,6 +321,2985 @@ textarea.form-control{resize:vertical;min-height:72px;}
 
 /* SECTIONS */
 .section-divider{height:1px;background:var(--border);margin:20px 0;}
+
+/* UPLOAD AREA */
+.upload-area{
+  border:2px dashed var(--border);border-radius:var(--radius);padding:20px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
+  transition:border-color .2s,background .2s;color:var(--muted);font-size:13px;
+}
+.upload-area:hover{border-color:var(--cyan);background:#00d4ff08;color:var(--text);}
+.upload-area.has-file{border-color:var(--green);background:#00e5a008;}
+.upload-preview-img{
+  width:100%;max-height:160px;object-fit:contain;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg);
+}
+.upload-preview-wrap{
+  position:relative;display:inline-block;width:100%;
+}
+.upload-remove{
+  position:absolute;top:6px;right:6px;background:#00000099;border:none;color:#fff;
+  border-radius:50%;width:22px;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+}
+.upload-remove:hover{background:#ff4466;}
+
+/* RECEIPT IMAGE GRID */
+.receipt-image-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;
+}
+.receipt-image-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;cursor:pointer;transition:border-color .2s,transform .15s;
+}
+.receipt-image-card:hover{border-color:var(--cyan);transform:translateY(-2px);}
+.receipt-image-card img{width:100%;height:140px;object-fit:cover;display:block;background:var(--bg);}
+.receipt-image-card .receipt-card-body{padding:10px 12px;}
+.receipt-image-card .receipt-card-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.receipt-image-card .receipt-card-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.receipt-empty{color:var(--muted);font-size:13px;padding:20px 0;}
+
+/* IMAGE LIGHTBOX */
+#lightbox{
+  position:fixed;inset:0;background:#000000ee;z-index:9999;
+  display:none;align-items:center;justify-content:center;
+}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:var(--radius);}
+#lightbox-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.info-item{background:var(--bg);border-radius:var(--radius);padding:12px;}
+.info-label{font-size:11px;color:var(--muted);margin-bottom:3px;}
+.info-value{font-size:13px;color:var(--text);}
+
+/* GRADIENT TEXT */
+.grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* SETTINGS */
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;}
+.settings-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:14px;}
+.setup-guide{background:var(--bg);border-radius:var(--radius);padding:14px;font-size:12px;color:var(--muted);line-height:1.7;}
+.setup-guide code{background:#ffffff15;padding:1px 5px;border-radius:4px;color:var(--cyan);font-size:11px;}
+.var-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+.var-table td{padding:5px 8px;border-bottom:1px solid var(--border);}
+.var-table td:first-child{color:var(--cyan);font-family:monospace;}
+
+/* SAVED SERVICES PAGE */
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div id="sidebar-brand">
+      <div class="logo-text">THE DESIGN CIRCUIT</div>
+      <div class="logo-sub">Business Manager v2</div>
+    </div>
+    <nav>
+      <div class="nav-group">Overview</div>
+      <div class="nav-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" data-page="pl">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+        Profit & Loss
+      </div>
+
+      <div class="nav-group">Documents</div>
+      <div class="nav-item" data-page="invoices">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Invoices
+      </div>
+      <div class="nav-item" data-page="quotes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+        Quotes
+      </div>
+      <div class="nav-item" data-page="pos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Purchase Orders
+      </div>
+      <div class="nav-item" data-page="receipts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Receipts
+      </div>
+      <div class="nav-item" data-page="saved-services">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        Saved Services
+      </div>
+
+      <div class="nav-group">Finance</div>
+      <div class="nav-item" data-page="payments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Payments
+      </div>
+      <div class="nav-item" data-page="expenses">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Expenses
+      </div>
+
+      <div class="nav-group">Contacts</div>
+      <div class="nav-item" data-page="clients">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clients
+      </div>
+      <div class="nav-item" data-page="suppliers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Suppliers
+      </div>
+
+      <div class="nav-group">System</div>
+      <div class="nav-item" data-page="receipt-images">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+        Receipt Images
+      </div>
+      <div class="nav-item" data-page="email-settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email Settings
+      </div>
+    </nav>
+    <div id="sidebar-bottom">
+      <div style="font-size:11px;color:var(--muted);">TDC © 2025 · T&T</div>
+    </div>
+  </div>
+
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <!-- TOPBAR -->
+    <div id="topbar">
+      <button id="menu-toggle" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div id="topbar-title">Dashboard</div>
+      <div id="search-wrap">
+        <div id="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <input id="search-input" type="text" placeholder="Search everything…" autocomplete="off" oninput="handleSearch(this.value)" onblur="setTimeout(()=>closeSearch(),200)"/>
+        <div id="search-dropdown"></div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div class="page-header">
+          <div class="page-title">Dashboard</div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="openModal('doc-modal');setDocType('invoice')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Invoice
+            </button>
+          </div>
+        </div>
+        <div class="stats-grid" id="dashboard-stats"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="dashboard-tables">
+          <div class="table-card">
+            <div class="table-header"><h3>Recent Invoices</h3></div>
+            <div id="dash-invoices"></div>
+          </div>
+          <div class="table-card">
+            <div class="table-header"><h3>Recent Expenses</h3></div>
+            <div id="dash-expenses"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- P&L -->
+      <div id="page-pl" class="page">
+        <div class="page-header">
+          <div class="page-title">Profit & Loss</div>
+          <button class="btn btn-ghost" onclick="exportPL()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export PDF
+          </button>
+        </div>
+        <div class="pl-period-btns">
+          <button class="pl-period-btn active" onclick="setPLPeriod('month',this)">This Month</button>
+          <button class="pl-period-btn" onclick="setPLPeriod('last-month',this)">Last Month</button>
+          <button class="pl-period-btn" onclick="setPLPeriod('quarter',this)">This Quarter</button>
+          <button class="pl-period-btn" onclick="setPLPeriod('year',this)">This Year</button>
+          <button class="pl-period-btn" onclick="setPLPeriod('all',this)">All Time</button>
+          <button class="pl-period-btn" onclick="setPLPeriod('custom',this)">Custom</button>
+        </div>
+        <div id="pl-custom-range" style="display:none;gap:10px;margin-bottom:16px;flex-wrap:wrap;" class="flex">
+          <div class="form-group"><label>From</label><input type="date" id="pl-from" class="form-control" onchange="renderPL()"/></div>
+          <div class="form-group"><label>To</label><input type="date" id="pl-to" class="form-control" onchange="renderPL()"/></div>
+        </div>
+        <div class="pl-summary" id="pl-summary"></div>
+        <div class="table-card"><div id="pl-details"></div></div>
+      </div>
+
+      <!-- INVOICES -->
+      <div id="page-invoices" class="page">
+        <div class="page-header">
+          <div class="page-title">Invoices</div>
+          <button class="btn btn-primary" onclick="openModal('doc-modal');setDocType('invoice')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Invoice
+          </button>
+        </div>
+        <div class="table-card" id="invoices-table"></div>
+      </div>
+
+      <!-- QUOTES -->
+      <div id="page-quotes" class="page">
+        <div class="page-header">
+          <div class="page-title">Quotes</div>
+          <button class="btn btn-primary" onclick="openModal('doc-modal');setDocType('quote')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Quote
+          </button>
+        </div>
+        <div class="table-card" id="quotes-table"></div>
+      </div>
+
+      <!-- PURCHASE ORDERS -->
+      <div id="page-pos" class="page">
+        <div class="page-header">
+          <div class="page-title">Purchase Orders</div>
+          <button class="btn btn-primary" onclick="openModal('doc-modal');setDocType('po')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New PO
+          </button>
+        </div>
+        <div class="table-card" id="pos-table"></div>
+      </div>
+
+      <!-- RECEIPTS -->
+      <div id="page-receipts" class="page">
+        <div class="page-header">
+          <div class="page-title">Receipts</div>
+          <button class="btn btn-primary" onclick="openModal('doc-modal');setDocType('receipt')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Receipt
+          </button>
+        </div>
+        <div class="table-card" id="receipts-table"></div>
+      </div>
+
+      <!-- SAVED SERVICES -->
+      <div id="page-saved-services" class="page">
+        <div class="page-header">
+          <div class="page-title">Saved Services</div>
+          <button class="btn btn-primary" onclick="openAddServiceModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Service
+          </button>
+        </div>
+        <div class="table-card" id="services-table"></div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div id="page-payments" class="page">
+        <div class="page-header">
+          <div class="page-title">Payments</div>
+          <button class="btn btn-primary" onclick="openAddPaymentModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Log Payment
+          </button>
+        </div>
+        <div class="table-card" id="payments-table"></div>
+      </div>
+
+      <!-- EXPENSES -->
+      <div id="page-expenses" class="page">
+        <div class="page-header">
+          <div class="page-title">Expenses</div>
+          <button class="btn btn-primary" onclick="openAddExpenseModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Log Expense
+          </button>
+        </div>
+        <div class="table-card" id="expenses-table"></div>
+      </div>
+
+      <!-- CLIENTS -->
+      <div id="page-clients" class="page">
+        <div class="page-header">
+          <div class="page-title">Clients</div>
+          <button class="btn btn-primary" onclick="openAddClientModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Client
+          </button>
+        </div>
+        <div class="table-card" id="clients-table"></div>
+      </div>
+
+      <!-- SUPPLIERS -->
+      <div id="page-suppliers" class="page">
+        <div class="page-header">
+          <div class="page-title">Suppliers</div>
+          <button class="btn btn-primary" onclick="openAddSupplierModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Supplier
+          </button>
+        </div>
+        <div class="table-card" id="suppliers-table"></div>
+      </div>
+
+      <!-- RECEIPT IMAGES -->
+      <div id="page-receipt-images" class="page">
+        <div class="page-header"><div class="page-title">Receipt Images</div></div>
+
+        <!-- Received from clients -->
+        <div style="margin-bottom:28px;">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;">
+            <span style="color:var(--green);">●</span> Received from Clients
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Proof of payment sent to you by clients</div>
+          <div id="receipt-images-received" class="receipt-image-grid"></div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin-bottom:28px;"></div>
+
+        <!-- Paid by you -->
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;">
+            <span style="color:var(--amber);">●</span> Payments You Made
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Receipts for expenses and bills you paid</div>
+          <div id="receipt-images-paid" class="receipt-image-grid"></div>
+        </div>
+      </div>
+
+      <!-- EMAIL SETTINGS -->
+      <div id="page-email-settings" class="page">
+        <div class="page-header"><div class="page-title">Email Settings</div></div>
+        <div class="settings-card">
+          <h3>EmailJS Configuration</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Public Key</label><input type="text" id="ejs-public-key" class="form-control" placeholder="user_xxxx"/></div>
+            <div class="form-group"><label>Service ID</label><input type="text" id="ejs-service-id" class="form-control" placeholder="service_xxxx"/></div>
+            <div class="form-group"><label>Template ID</label><input type="text" id="ejs-template-id" class="form-control" placeholder="template_xxxx"/></div>
+            <div class="form-group"><label>From Email</label><input type="email" id="ejs-from-email" class="form-control" placeholder="you@domain.com"/></div>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px;">
+            <button class="btn btn-primary" onclick="saveEmailSettings()">Save Settings</button>
+            <button class="btn btn-ghost" onclick="testEmail()">Send Test</button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <h3>Setup Guide</h3>
+          <div class="setup-guide">
+            <p>1. Go to <strong>emailjs.com</strong> and create a free account</p>
+            <p>2. Add an Email Service (Gmail recommended) → copy <code>service_id</code></p>
+            <p>3. Create an Email Template with these variables:</p>
+            <table class="var-table">
+              <tr><td>{{to_email}}</td><td>Recipient email address</td></tr>
+              <tr><td>{{to_name}}</td><td>Recipient name</td></tr>
+              <tr><td>{{subject}}</td><td>Email subject line</td></tr>
+              <tr><td>{{message}}</td><td>Intro message (also included inside doc_html)</td></tr>
+              <tr><td>{{doc_html}}</td><td>The complete email — set as your template body</td></tr>
+            </table>
+            <p style="margin-top:8px;">4. In your EmailJS template, set the <strong>body/content field</strong> to just: <code>{{{doc_html}}}</code> (triple braces to allow HTML)</p>
+            <p>5. Go to Account → API Keys → copy your <code>public_key</code></p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- MOBILE NAV -->
+    <div id="mobile-nav">
+      <div id="mobile-nav-inner">
+        <div class="mobile-nav-item active" data-page="dashboard" onclick="goPage('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Dash
+        </div>
+        <div class="mobile-nav-item" data-page="invoices" onclick="goPage('invoices')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          Invoices
+        </div>
+        <div class="mobile-nav-item" data-page="quotes" onclick="goPage('quotes')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          Quotes
+        </div>
+        <div class="mobile-nav-item" data-page="payments" onclick="goPage('payments')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Payments
+        </div>
+        <div class="mobile-nav-item" data-page="clients" onclick="goPage('clients')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Clients
+        </div>
+        <div class="mobile-nav-item" data-page="expenses" onclick="goPage('expenses')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Expenses
+        </div>
+      </div>
+    </div>
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- DOCUMENT CREATE/EDIT MODAL -->
+<div id="doc-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('doc-modal')">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <h3 id="doc-modal-title">New Invoice</h3>
+      <button class="modal-close" onclick="closeModal('doc-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="doc-edit-id"/>
+      <input type="hidden" id="doc-type-field"/>
+
+      <div class="form-section">
+        <div class="form-section-title">Document Info</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Document #</label>
+            <input type="text" id="doc-number" class="form-control" readonly/>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="doc-date" class="form-control"/>
+          </div>
+          <div class="form-group" id="due-date-wrap">
+            <label>Due Date</label>
+            <input type="date" id="doc-due-date" class="form-control"/>
+          </div>
+          <div class="form-group" id="client-wrap">
+            <label id="client-label">Client</label>
+            <select id="doc-client" class="form-control"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Line Items</div>
+        <div id="line-items-chips"></div>
+        <div style="display:grid;grid-template-columns:1fr 80px 110px 90px 32px;gap:6px;padding:0 0 6px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">
+          <span>Description</span><span>Qty</span><span>Unit Price</span><span>Total</span><span></span>
+        </div>
+        <div id="line-items-list"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addLineItem()" style="margin-top:2px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Line
+        </button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Pricing</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>VAT Rate (%)</label>
+            <input type="number" id="doc-vat" class="form-control" value="12.5" step="0.1" min="0" oninput="updateTotalsPreview()"/>
+          </div>
+          <div class="form-group">
+            <label>Discount</label>
+            <div id="discount-row">
+              <select id="discount-type" class="form-control" onchange="updateDiscountUI()" style="width:130px;">
+                <option value="none">None</option>
+                <option value="percent">Percentage (%)</option>
+                <option value="fixed">Fixed Amount ($)</option>
+              </select>
+              <div id="discount-input-wrap" style="display:none;align-items:center;gap:4px;">
+                <input type="number" id="discount-value" class="form-control" placeholder="0" min="0" oninput="updateTotalsPreview()" style="width:90px;"/>
+                <span id="discount-unit" style="color:var(--muted);font-size:13px;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="totals-preview"></div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Notes</div>
+        <textarea id="doc-notes" class="form-control form-full" rows="2" placeholder="Optional notes…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('doc-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDoc()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DOC PREVIEW MODAL -->
+<div id="doc-preview-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('doc-preview-modal')">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <h3 id="doc-preview-title">Document Preview</h3>
+      <button class="modal-close" onclick="closeModal('doc-preview-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div id="doc-preview-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;"></div>
+      <div id="doc-preview-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RECORD PAYMENT MODAL (partial invoice payments) -->
+<div id="record-payment-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('record-payment-modal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Record Payment</h3>
+      <button class="modal-close" onclick="closeModal('record-payment-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="rp-invoice-id"/>
+      <div id="rp-balance-info" style="background:var(--bg);border-radius:var(--radius);padding:12px;margin-bottom:14px;font-size:13px;"></div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Amount (TTD)</label>
+          <input type="number" id="rp-amount" class="form-control" step="0.01" min="0.01" placeholder="0.00"/>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="rp-date" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Method</label>
+          <select id="rp-method" class="form-control">
+            <option>Cash</option><option>Transfer</option><option>Cheque</option><option>Credit Card</option><option>Online</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reference</label>
+          <input type="text" id="rp-reference" class="form-control" placeholder="Optional"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Notes</label>
+          <textarea id="rp-notes" class="form-control" rows="2" placeholder="Optional"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('record-payment-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveInvoicePayment()">Save Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE TO INVOICE MODAL -->
+<div id="convert-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('convert-modal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Convert to Invoice</h3>
+      <button class="modal-close" onclick="closeModal('convert-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="convert-quote-id"/>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Set the invoice date and due date. All line items, client, and totals will be copied from the quote.</p>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Invoice Date</label>
+          <input type="date" id="convert-date" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="convert-due-date" class="form-control"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('convert-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmConvert()">Create Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEND EMAIL MODAL -->
+<div id="email-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('email-modal')">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>Send Document by Email</h3>
+      <button class="modal-close" onclick="closeModal('email-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>To Email</label>
+          <input type="email" id="email-to" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label>To Name</label>
+          <input type="text" id="email-to-name" class="form-control"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Subject</label>
+          <input type="text" id="email-subject" class="form-control"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Message</label>
+          <textarea id="email-message" class="form-control" rows="3" placeholder="Optional intro message…" oninput="refreshEmailPreview()"></textarea>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Email Preview</div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-height:340px;overflow-y:auto;">
+        <div id="email-preview"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('email-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendEmail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
+        Send
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT CLIENT MODAL -->
+<div id="client-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('client-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="client-modal-title">Add Client</h3>
+      <button class="modal-close" onclick="closeModal('client-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="client-edit-id"/>
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Business Name</label><input type="text" id="client-name" class="form-control"/></div>
+        <div class="form-group"><label>Contact Person</label><input type="text" id="client-contact" class="form-control"/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="client-email" class="form-control"/></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="client-phone" class="form-control"/></div>
+        <div class="form-group form-full"><label>Address</label><input type="text" id="client-address" class="form-control"/></div>
+        <div class="form-group form-full"><label>Notes</label><textarea id="client-notes" class="form-control" rows="2"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('client-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveClient()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT SUPPLIER MODAL -->
+<div id="supplier-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('supplier-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="supplier-modal-title">Add Supplier</h3>
+      <button class="modal-close" onclick="closeModal('supplier-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="supplier-edit-id"/>
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Company Name</label><input type="text" id="supplier-name" class="form-control"/></div>
+        <div class="form-group"><label>Contact Person</label><input type="text" id="supplier-contact" class="form-control"/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="supplier-email" class="form-control"/></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="supplier-phone" class="form-control"/></div>
+        <div class="form-group"><label>Category</label><input type="text" id="supplier-category" class="form-control" placeholder="e.g. Printing, Hosting"/></div>
+        <div class="form-group"><label>Address</label><input type="text" id="supplier-address" class="form-control"/></div>
+        <div class="form-group form-full"><label>Notes</label><textarea id="supplier-notes" class="form-control" rows="2"></textarea></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('supplier-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSupplier()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PAYMENT MODAL -->
+<div id="payment-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('payment-modal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3 id="payment-modal-title">Log Payment</h3>
+      <button class="modal-close" onclick="closeModal('payment-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="payment-edit-id"/>
+      <div class="form-grid">
+        <div class="form-group"><label>Client</label><select id="payment-client" class="form-control"></select></div>
+        <div class="form-group"><label>Amount (TTD)</label><input type="number" id="payment-amount" class="form-control" step="0.01"/></div>
+        <div class="form-group"><label>Date</label><input type="date" id="payment-date" class="form-control"/></div>
+        <div class="form-group"><label>Method</label>
+          <select id="payment-method" class="form-control">
+            <option>Cash</option><option>Transfer</option><option>Cheque</option><option>Credit Card</option><option>Online</option>
+          </select>
+        </div>
+        <div class="form-group form-full"><label>Reference</label><input type="text" id="payment-reference" class="form-control" placeholder="Optional"/></div>
+        <div class="form-group form-full"><label>Notes</label><textarea id="payment-notes" class="form-control" rows="2"></textarea></div>
+        <div class="form-group form-full">
+          <label>Receipt Image <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <div id="payment-upload-area" class="upload-area" onclick="document.getElementById('payment-receipt-file').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="payment-upload-label">Click to upload or drag & drop</span>
+            <span style="font-size:11px;color:var(--muted);">JPG, PNG, PDF — max 5MB</span>
+          </div>
+          <input type="file" id="payment-receipt-file" accept="image/*,.pdf" style="display:none" onchange="previewUpload('payment')"/>
+          <div id="payment-upload-preview" style="display:none;margin-top:8px;"></div>
+          <input type="hidden" id="payment-existing-receipt"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('payment-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePayment()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT EXPENSE MODAL -->
+<div id="expense-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('expense-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="expense-modal-title">Log Expense</h3>
+      <button class="modal-close" onclick="closeModal('expense-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="expense-edit-id"/>
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Description</label><input type="text" id="expense-desc" class="form-control"/></div>
+        <div class="form-group"><label>Amount (TTD)</label><input type="number" id="expense-amount" class="form-control" step="0.01"/></div>
+        <div class="form-group"><label>Date</label><input type="date" id="expense-date" class="form-control"/></div>
+        <div class="form-group"><label>Category</label>
+          <select id="expense-category" class="form-control">
+            <option>Software</option><option>Hardware</option><option>Marketing</option><option>Hosting</option><option>Printing</option><option>Office</option><option>Transport</option><option>Utilities</option><option>Professional Fees</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Supplier</label><select id="expense-supplier" class="form-control"></select></div>
+        <div class="form-group form-full"><label>Vendor (manual)</label><input type="text" id="expense-vendor" class="form-control" placeholder="Or type vendor name"/></div>
+        <div class="form-group form-full"><label>Notes</label><textarea id="expense-notes" class="form-control" rows="2"></textarea></div>
+        <div class="form-group form-full">
+          <label>Receipt Image <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+          <div id="expense-upload-area" class="upload-area" onclick="document.getElementById('expense-receipt-file').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="expense-upload-label">Click to upload or drag & drop</span>
+            <span style="font-size:11px;color:var(--muted);">JPG, PNG, PDF — max 5MB</span>
+          </div>
+          <input type="file" id="expense-receipt-file" accept="image/*,.pdf" style="display:none" onchange="previewUpload('expense')"/>
+          <div id="expense-upload-preview" style="display:none;margin-top:8px;"></div>
+          <input type="hidden" id="expense-existing-receipt"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('expense-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveExpense()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT SERVICE MODAL -->
+<div id="service-modal" class="modal-backdrop" onclick="if(event.target===this)closeModal('service-modal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3 id="service-modal-title">Add Service</h3>
+      <button class="modal-close" onclick="closeModal('service-modal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="service-edit-id"/>
+      <div class="form-grid">
+        <div class="form-group form-full"><label>Service Name</label><input type="text" id="service-name" class="form-control"/></div>
+        <div class="form-group form-full"><label>Description</label><input type="text" id="service-description" class="form-control" placeholder="Line item description"/></div>
+        <div class="form-group"><label>Unit Price (TTD)</label><input type="number" id="service-price" class="form-control" step="0.01" min="0"/></div>
+        <div class="form-group"><label>Category</label><input type="text" id="service-category" class="form-control" placeholder="e.g. Design"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('service-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveService()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE LIGHTBOX -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="Receipt"/>
+</div>
+
+<!-- LOADING & TOAST -->
+<div id="loading-overlay"><div class="spinner"></div></div>
+<div id="toast-container"></div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://cerlzfaoiszyejcsihqb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gx4Kip5Cp0jRitAfygDZug_wv_rYwgu';
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let clients = [], suppliers = [], documents = [], payments = [], expenses = [];
+let invoicePayments = [], savedServices = [];
+let currentDocPreview = null;
+let plPeriod = 'month';
+let loadDepth = 0;
+
+// ── SUPABASE ─────────────────────────────────────────────────────────────────
+const sb = {
+  _h: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+  async get(table, query=''){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${query}`, { headers: this._h });
+    if(!r.ok) throw new Error(`GET ${table}: ${r.status}`);
+    return r.json();
+  },
+  async post(table, data){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', headers: this._h, body: JSON.stringify(data) });
+    if(!r.ok){ const e = await r.text(); throw new Error(`POST ${table}: ${e}`); }
+    return r.json();
+  },
+  async patch(table, id, data){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'PATCH', headers: this._h, body: JSON.stringify(data) });
+    if(!r.ok){ const e = await r.text(); throw new Error(`PATCH ${table}: ${e}`); }
+    return r.json();
+  },
+  async del(table, id){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, { method:'DELETE', headers: this._h });
+    if(!r.ok) throw new Error(`DELETE ${table}: ${r.status}`);
+    return true;
+  }
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+const $$ = v => '$' + (parseFloat(v)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const fmtDate = s => { if(!s) return '—'; const d = new Date(s+'T00:00:00'); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); };
+const today = () => new Date().toISOString().split('T')[0];
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function showLoading(){ loadDepth++; document.getElementById('loading-overlay').classList.add('show'); }
+function hideLoading(){ if(--loadDepth<=0){ loadDepth=0; document.getElementById('loading-overlay').classList.remove('show'); } }
+
+function toast(msg, type='success'){
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='all .3s'; setTimeout(()=>t.remove(),300); }, 3000);
+}
+
+function isOverdue(doc){
+  if(!doc.due_date) return false;
+  return new Date(doc.due_date) < new Date() && doc.status !== 'paid';
+}
+
+function getDocStatus(doc){
+  const paid = parseFloat(doc.amount_paid)||0;
+  const total = parseFloat(doc.total)||0;
+  if(isOverdue(doc) && paid < total) return 'overdue';
+  if(paid >= total && total > 0) return 'paid';
+  if(paid > 0 && paid < total) return 'partial';
+  if(doc.status === 'paid') return 'paid';
+  return doc.status || 'unpaid';
+}
+
+function statusBadge(doc){
+  const s = getDocStatus(doc);
+  const labels = { paid:'Paid', unpaid:'Unpaid', overdue:'Overdue', partial:'Partial', active:'Active' };
+  return `<span class="badge badge-${s}">${labels[s]||s}</span>`;
+}
+
+function typeBadge(type){
+  const map = { invoice:'Invoice', quote:'Quote', po:'PO', receipt:'Receipt' };
+  return `<span class="badge badge-${type}">${map[type]||type}</span>`;
+}
+
+// ── MODAL SYSTEM ──────────────────────────────────────────────────────────────
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function goPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(n=>n.classList.remove('active'));
+  const pg = document.getElementById(`page-${page}`);
+  if(pg) pg.classList.add('active');
+  document.querySelectorAll(`[data-page="${page}"]`).forEach(n=>n.classList.add('active'));
+  document.getElementById('topbar-title').textContent = pageTitles[page] || page;
+  closeSidebar();
+  renderPage(page);
+}
+
+const pageTitles = {
+  dashboard:'Dashboard', pl:'Profit & Loss', invoices:'Invoices', quotes:'Quotes',
+  pos:'Purchase Orders', receipts:'Receipts', 'saved-services':'Saved Services',
+  payments:'Payments', expenses:'Expenses', clients:'Clients', suppliers:'Suppliers',
+  'receipt-images':'Receipt Images', 'email-settings':'Email Settings'
+};
+
+function renderPage(page){
+  switch(page){
+    case 'dashboard': renderDashboard(); break;
+    case 'pl': renderPL(); break;
+    case 'invoices': renderDocTable('invoice','invoices-table'); break;
+    case 'quotes': renderDocTable('quote','quotes-table'); break;
+    case 'pos': renderDocTable('po','pos-table'); break;
+    case 'receipts': renderDocTable('receipt','receipts-table'); break;
+    case 'saved-services': renderServicesTable(); break;
+    case 'payments': renderPaymentsTable(); break;
+    case 'expenses': renderExpensesTable(); break;
+    case 'clients': renderClientsTable(); break;
+    case 'suppliers': renderSuppliersTable(); break;
+    case 'receipt-images': renderReceiptImages(); break;
+    case 'email-settings': loadEmailSettings(); break;
+  }
+}
+
+document.querySelectorAll('.nav-item[data-page]').forEach(el=>{
+  el.addEventListener('click', ()=>goPage(el.dataset.page));
+});
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+
+// ── LOAD ALL DATA ─────────────────────────────────────────────────────────────
+async function loadAll(){
+  showLoading();
+  try {
+    [clients, suppliers, documents, payments, expenses, invoicePayments, savedServices] = await Promise.all([
+      sb.get('clients','order=name.asc'),
+      sb.get('suppliers','order=name.asc'),
+      sb.get('documents','order=created_at.desc'),
+      sb.get('payments','order=date.desc'),
+      sb.get('expenses','order=date.desc'),
+      sb.get('invoice_payments','order=date.desc'),
+      sb.get('line_item_templates','order=name.asc')
+    ]);
+    renderPage('dashboard');
+  } catch(e){
+    console.error(e);
+    toast('Failed to load data: '+e.message,'error');
+  } finally { hideLoading(); }
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard(){
+  const totalIncome = payments.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  const totalExpenses = expenses.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  const netProfit = totalIncome - totalExpenses;
+  const invDocs = documents.filter(d=>d.type==='invoice');
+  const outstanding = invDocs.filter(d=>getDocStatus(d)!=='paid');
+  const outstandingVal = outstanding.reduce((s,d)=>s+(parseFloat(d.total||0)-parseFloat(d.amount_paid||0)),0);
+
+  document.getElementById('dashboard-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total Income</div><div class="stat-value cyan">${$$(totalIncome)}</div><div class="stat-sub">All recorded payments</div></div>
+    <div class="stat-card"><div class="stat-label">Total Expenses</div><div class="stat-value amber">${$$(totalExpenses)}</div><div class="stat-sub">All logged expenses</div></div>
+    <div class="stat-card"><div class="stat-label">Net Profit</div><div class="stat-value ${netProfit>=0?'green':''}cyan">${$$(netProfit)}</div><div class="stat-sub">Income − Expenses</div></div>
+    <div class="stat-card"><div class="stat-label">Outstanding</div><div class="stat-value amber">${$$(outstandingVal)}</div><div class="stat-sub">${outstanding.length} invoice${outstanding.length!==1?'s':''}</div></div>
+    <div class="stat-card"><div class="stat-label">Clients</div><div class="stat-value violet">${clients.length}</div><div class="stat-sub">Total contacts</div></div>
+    <div class="stat-card"><div class="stat-label">Invoices</div><div class="stat-value">${invDocs.length}</div><div class="stat-sub">All time</div></div>
+  `;
+
+  // Recent invoices
+  const recent = [...invDocs].slice(0,5);
+  document.getElementById('dash-invoices').innerHTML = recent.length ? `
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Client</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody>${recent.map(d=>`
+        <tr style="cursor:pointer" onclick="openDocPreview('${d.id}')">
+          <td style="color:var(--muted);font-size:12px;">${d.doc_number||'—'}</td>
+          <td>${esc(d.client_name||'—')}</td>
+          <td style="color:var(--cyan)">${$$(d.total)}</td>
+          <td>${statusBadge(d)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty-state">No invoices yet</div>';
+
+  // Recent expenses
+  const recentExp = [...expenses].slice(0,5);
+  document.getElementById('dash-expenses').innerHTML = recentExp.length ? `
+    <table class="tbl">
+      <thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
+      <tbody>${recentExp.map(e=>`
+        <tr>
+          <td>${esc(e.description||'—')}</td>
+          <td style="color:var(--muted);font-size:12px;">${fmtDate(e.date)}</td>
+          <td style="color:var(--amber)">${$$(e.amount)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty-state">No expenses yet</div>';
+}
+
+// ── P&L ───────────────────────────────────────────────────────────────────────
+function setPLPeriod(p, btn){
+  plPeriod = p;
+  document.querySelectorAll('.pl-period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pl-custom-range').style.display = p==='custom'?'flex':'none';
+  renderPL();
+}
+
+function getPLDates(){
+  const n = new Date();
+  if(plPeriod==='month') return [new Date(n.getFullYear(),n.getMonth(),1).toISOString().split('T')[0], today()];
+  if(plPeriod==='last-month'){
+    const s = new Date(n.getFullYear(),n.getMonth()-1,1);
+    const e = new Date(n.getFullYear(),n.getMonth(),0);
+    return [s.toISOString().split('T')[0], e.toISOString().split('T')[0]];
+  }
+  if(plPeriod==='quarter'){
+    const q = Math.floor(n.getMonth()/3);
+    return [new Date(n.getFullYear(),q*3,1).toISOString().split('T')[0], today()];
+  }
+  if(plPeriod==='year') return [`${n.getFullYear()}-01-01`, today()];
+  if(plPeriod==='custom') return [document.getElementById('pl-from').value, document.getElementById('pl-to').value];
+  return [null,null];
+}
+
+function inRange(dateStr, from, to){
+  if(!from && !to) return true;
+  if(!dateStr) return false;
+  if(from && dateStr < from) return false;
+  if(to && dateStr > to) return false;
+  return true;
+}
+
+function renderPL(){
+  const [from,to] = getPLDates();
+  const filtPay = payments.filter(p=>inRange(p.date,from,to));
+  const filtExp = expenses.filter(e=>inRange(e.date,from,to));
+  const income = filtPay.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  const expTotal = filtExp.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  const net = income - expTotal;
+
+  document.getElementById('pl-summary').innerHTML = `
+    <div class="pl-card"><div class="pl-card-label">Total Income</div><div class="pl-card-value" style="color:var(--cyan)">${$$(income)}</div></div>
+    <div class="pl-card"><div class="pl-card-label">Total Expenses</div><div class="pl-card-value" style="color:var(--amber)">${$$(expTotal)}</div></div>
+    <div class="pl-card"><div class="pl-card-label">Net Profit</div><div class="pl-card-value" style="color:${net>=0?'var(--green)':'var(--red)'}">${$$(net)}</div></div>
+  `;
+
+  // Expense breakdown by category
+  const cats = {};
+  filtExp.forEach(e=>{ cats[e.category||'Other']=(cats[e.category||'Other']||0)+parseFloat(e.amount||0); });
+  const catRows = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+    <tr><td>${k}</td><td></td><td style="color:var(--amber)">${$$(v)}</td></tr>`).join('');
+
+  document.getElementById('pl-details').innerHTML = `
+    <table class="tbl">
+      <thead><tr><th>Description</th><th>Date</th><th>Amount</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3" style="padding:8px 18px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#00d4ff08;">Income</td></tr>
+        ${filtPay.length ? filtPay.map(p=>`<tr><td>${esc(p.client_name||'—')} ${p.reference?`<span style="color:var(--muted);font-size:11px;">(${esc(p.reference)})</span>`:''}</td><td style="color:var(--muted);font-size:12px;">${fmtDate(p.date)}</td><td style="color:var(--green)">${$$(p.amount)}</td></tr>`).join('') : '<tr><td colspan="3" class="empty-state">No income</td></tr>'}
+        <tr><td colspan="3" style="padding:8px 18px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#ffb02008;">Expenses by Category</td></tr>
+        ${catRows || '<tr><td colspan="3" class="empty-state">No expenses</td></tr>'}
+        <tr class="total-row"><td>NET PROFIT</td><td></td><td>${$$(net)}</td></tr>
+      </tbody>
+    </table>`;
+}
+
+async function exportPL(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const [from,to] = getPLDates();
+  const filtPay = payments.filter(p=>inRange(p.date,from,to));
+  const filtExp = expenses.filter(e=>inRange(e.date,from,to));
+  const income = filtPay.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  const expTotal = filtExp.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  const net = income - expTotal;
+
+  doc.setFontSize(20); doc.text('The Design Circuit', 14, 20);
+  doc.setFontSize(14); doc.text('Profit & Loss Report', 14, 30);
+  doc.setFontSize(10); doc.text(`Period: ${from||'All Time'} to ${to||today()}`, 14, 40);
+  doc.setFontSize(12);
+  doc.text(`Total Income: $${income.toFixed(2)}`, 14, 55);
+  doc.text(`Total Expenses: $${expTotal.toFixed(2)}`, 14, 63);
+  doc.text(`Net Profit: $${net.toFixed(2)}`, 14, 71);
+  doc.setFontSize(10); let y=85;
+  doc.text('Income Breakdown', 14, y); y+=8;
+  filtPay.forEach(p=>{ if(y>270){doc.addPage();y=20;} doc.text(`${fmtDate(p.date)} | ${p.client_name||'—'} | $${parseFloat(p.amount||0).toFixed(2)}`, 14, y); y+=6; });
+  y+=4; doc.text('Expense Breakdown', 14, y); y+=8;
+  filtExp.forEach(e=>{ if(y>270){doc.addPage();y=20;} doc.text(`${fmtDate(e.date)} | ${e.description||'—'} | $${parseFloat(e.amount||0).toFixed(2)}`, 14, y); y+=6; });
+  doc.save(`TDC_PL_${today()}.pdf`);
+}
+
+// ── DOC NUMBER ────────────────────────────────────────────────────────────────
+function getNextDocNum(type){
+  const prefixes = { invoice:'INV', quote:'QT', po:'PO', receipt:'RCP' };
+  const prefix = prefixes[type] || 'DOC';
+  const existing = documents.filter(d=>d.type===type && d.doc_number && d.doc_number.startsWith(prefix+'-'));
+  let max = 0;
+  existing.forEach(d=>{ const n=parseInt((d.doc_number||'').split('-')[1]||0); if(n>max)max=n; });
+  return `${prefix}-${String(max+1).padStart(3,'0')}`;
+}
+
+// ── DOC CREATE/EDIT ───────────────────────────────────────────────────────────
+let currentDocType = 'invoice';
+
+function setDocType(type){
+  currentDocType = type;
+  const typeNames = { invoice:'Invoice', quote:'Quote', po:'Purchase Order', receipt:'Receipt' };
+  document.getElementById('doc-modal-title').textContent = 'New '+typeNames[type];
+  document.getElementById('doc-type-field').value = type;
+  document.getElementById('doc-edit-id').value = '';
+  document.getElementById('doc-number').value = getNextDocNum(type);
+  document.getElementById('doc-date').value = today();
+  document.getElementById('doc-due-date').value = '';
+  document.getElementById('doc-notes').value = '';
+  document.getElementById('doc-vat').value = '12.5';
+  document.getElementById('discount-type').value = 'none';
+  document.getElementById('discount-input-wrap').style.display = 'none';
+  document.getElementById('discount-value').value = '';
+
+  // Client vs supplier
+  const isPO = type === 'po';
+  document.getElementById('client-label').textContent = isPO ? 'Supplier' : 'Client';
+  document.getElementById('due-date-wrap').style.display = type==='receipt' ? 'none' : 'block';
+
+  const sel = document.getElementById('doc-client');
+  const list = isPO ? suppliers : clients;
+  sel.innerHTML = `<option value="">— Select ${isPO?'Supplier':'Client'} —</option>` +
+    list.map(c=>`<option value="${c.id}" data-name="${esc(c.name)}">${esc(c.name)}</option>`).join('');
+  sel.value = ''; // always reset selection when type changes
+
+  // Line items
+  document.getElementById('line-items-list').innerHTML = '';
+  addLineItem();
+  updateTotalsPreview();
+  loadServiceChips();
+}
+
+function openEditDoc(id){
+  const doc = documents.find(d=>d.id===id);
+  if(!doc) return;
+  setDocType(doc.type);
+  document.getElementById('doc-modal-title').textContent = 'Edit '+doc.type.charAt(0).toUpperCase()+doc.type.slice(1);
+  document.getElementById('doc-edit-id').value = doc.id;
+  document.getElementById('doc-number').value = doc.doc_number || '';
+  document.getElementById('doc-date').value = doc.date || '';
+  document.getElementById('doc-due-date').value = doc.due_date || '';
+  document.getElementById('doc-notes').value = doc.notes || '';
+  document.getElementById('doc-vat').value = doc.vat_rate ?? 12.5;
+  document.getElementById('discount-type').value = doc.discount_type || 'none';
+  document.getElementById('discount-value').value = doc.discount_value || '';
+  updateDiscountUI();
+
+  const isPO = doc.type==='po';
+  const sel = document.getElementById('doc-client');
+  sel.value = doc.client_id || '';
+
+  // Load line items
+  document.getElementById('line-items-list').innerHTML = '';
+  let items = [];
+  try { items = JSON.parse(doc.items||'[]'); } catch(e){}
+  items.forEach(it=>addLineItem(it));
+  updateTotalsPreview();
+  openModal('doc-modal');
+}
+
+function addLineItem(item=null){
+  const li = document.getElementById('line-items-list');
+  const idx = li.children.length;
+  const row = document.createElement('div');
+  row.className = 'line-item-row';
+  row.innerHTML = `
+    <input type="text" class="form-control li-desc" placeholder="Description" value="${esc(item?.description||'')}" oninput="updateTotalsPreview()"/>
+    <input type="number" class="form-control li-qty" value="${item?.qty??1}" min="0" step="0.01" oninput="updateLineTotal(this)"/>
+    <input type="number" class="form-control li-price" value="${item?.unit_price??''}" placeholder="0.00" min="0" step="0.01" oninput="updateLineTotal(this)"/>
+    <div class="line-item-total li-total">${$$(((item?.qty??1)*(item?.unit_price??0)))}</div>
+    <button class="line-item-remove" onclick="this.closest('.line-item-row').remove();updateTotalsPreview()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  `;
+  li.appendChild(row);
+}
+
+function updateLineTotal(input){
+  const row = input.closest('.line-item-row');
+  const qty = parseFloat(row.querySelector('.li-qty').value)||0;
+  const price = parseFloat(row.querySelector('.li-price').value)||0;
+  row.querySelector('.li-total').textContent = $$(qty*price);
+  updateTotalsPreview();
+}
+
+function getLineItems(){
+  return [...document.querySelectorAll('.line-item-row')].map(row=>({
+    description: row.querySelector('.li-desc').value,
+    qty: parseFloat(row.querySelector('.li-qty').value)||1,
+    unit_price: parseFloat(row.querySelector('.li-price').value)||0,
+    total: parseFloat(row.querySelector('.li-qty').value||1) * parseFloat(row.querySelector('.li-price').value||0)
+  }));
+}
+
+function calcTotals(){
+  const items = getLineItems();
+  const subtotal = items.reduce((s,i)=>s+i.total,0);
+  const vat = parseFloat(document.getElementById('doc-vat').value)||0;
+  const dtype = document.getElementById('discount-type').value;
+  const dval = parseFloat(document.getElementById('discount-value').value)||0;
+  let discountAmt = 0;
+  if(dtype==='percent') discountAmt = subtotal*(dval/100);
+  if(dtype==='fixed') discountAmt = Math.min(dval, subtotal);
+  const discountedSub = subtotal - discountAmt;
+  const vatAmt = discountedSub * (vat/100);
+  const total = discountedSub + vatAmt;
+  return { subtotal, discountAmt, discountedSub, vatAmt, vatRate:vat, discountType:dtype, discountValue:dval, total };
+}
+
+function updateTotalsPreview(){
+  const t = calcTotals();
+  const dtype = document.getElementById('discount-type').value;
+  document.getElementById('totals-preview').innerHTML = `
+    <div class="totals-row"><span>Subtotal</span><span>${$$(t.subtotal)}</span></div>
+    ${dtype!=='none' && t.discountAmt>0 ? `
+    <div class="totals-row discount"><span>Discount ${dtype==='percent'?`(${t.discountValue}%)`:''}</span><span>−${$$(t.discountAmt)}</span></div>
+    <div class="totals-row"><span>After Discount</span><span>${$$(t.discountedSub)}</span></div>` : ''}
+    <div class="totals-row"><span>VAT (${t.vatRate}%)</span><span>${$$(t.vatAmt)}</span></div>
+    <div class="totals-row total"><span>TOTAL</span><span>${$$(t.total)}</span></div>
+  `;
+}
+
+function updateDiscountUI(){
+  const type = document.getElementById('discount-type').value;
+  const wrap = document.getElementById('discount-input-wrap');
+  wrap.style.display = type==='none' ? 'none' : 'flex';
+  document.getElementById('discount-unit').textContent = type==='percent' ? '%' : 'TTD';
+  updateTotalsPreview();
+}
+
+async function saveDoc(){
+  const id = document.getElementById('doc-edit-id').value;
+  const type = document.getElementById('doc-type-field').value;
+  const clientSel = document.getElementById('doc-client');
+  const clientId = clientSel.value;
+  const clientName = clientSel.options[clientSel.selectedIndex]?.dataset.name || clientSel.options[clientSel.selectedIndex]?.text || '';
+  const items = getLineItems();
+  const t = calcTotals();
+
+  // For POs the "client" is actually a supplier — store supplier_id in client_id column
+  // but only if that ID actually exists in the correct table
+  const isPO = type === 'po';
+  const validId = isPO
+    ? (suppliers.find(s => s.id === clientId) ? clientId : null)
+    : (clients.find(c => c.id === clientId) ? clientId : null);
+
+  const data = {
+    type, doc_number: document.getElementById('doc-number').value,
+    client_id: validId || null, client_name: clientName,
+    date: document.getElementById('doc-date').value,
+    due_date: document.getElementById('doc-due-date').value || null,
+    items: JSON.stringify(items),
+    subtotal: t.subtotal, vat_rate: t.vatRate, vat_amount: t.vatAmt, total: t.total,
+    discount_type: t.discountType, discount_value: t.discountValue, discount_amount: t.discountAmt,
+    notes: document.getElementById('doc-notes').value,
+    status: 'unpaid'
+  };
+
+  showLoading();
+  try {
+    if(id){
+      await sb.patch('documents', id, data);
+      const idx = documents.findIndex(d=>d.id===id);
+      const updated = await sb.get('documents',`id=eq.${id}`);
+      if(idx>=0 && updated[0]) documents[idx] = updated[0];
+      toast('Document updated');
+    } else {
+      const res = await sb.post('documents', data);
+      if(res[0]) documents.unshift(res[0]);
+      toast('Document created');
+    }
+    closeModal('doc-modal');
+    renderPage(type==='invoice'?'invoices':type==='quote'?'quotes':type==='po'?'pos':'receipts');
+    renderDashboard();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deleteDoc(id){
+  if(!confirm('Delete this document?')) return;
+  showLoading();
+  try {
+    await sb.del('documents', id);
+    documents = documents.filter(d=>d.id!==id);
+    closeModal('doc-preview-modal');
+    renderDashboard();
+    renderPage(currentDocPreview?.type==='invoice'?'invoices':currentDocPreview?.type==='quote'?'quotes':currentDocPreview?.type==='po'?'pos':'receipts');
+    toast('Document deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function markPaid(id){
+  const doc = documents.find(d=>d.id===id);
+  if(!doc) return;
+  showLoading();
+  try {
+    await sb.patch('documents', id, { status:'paid', amount_paid: doc.total });
+    doc.status = 'paid'; doc.amount_paid = doc.total;
+    toast('Marked as paid');
+    closeModal('doc-preview-modal');
+    renderPage('invoices');
+    renderDashboard();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── DOC TABLE ──────────────────────────────────────────────────────────────────
+function renderDocTable(type, containerId){
+  const docs = documents.filter(d=>d.type===type);
+  const isInvoice = type==='invoice';
+  const isQuote = type==='quote';
+  document.getElementById(containerId).innerHTML = docs.length ? `
+    <table class="tbl">
+      <thead><tr>
+        <th>#</th><th>${type==='po'?'Supplier':'Client'}</th><th>Date</th>
+        ${isInvoice?'<th>Due</th>':''}
+        <th>Total</th>
+        ${isInvoice?'<th>Paid</th>':''}
+        <th>Status</th><th style="text-align:right">Actions</th>
+      </tr></thead>
+      <tbody>${docs.map(d=>{
+        const paid = parseFloat(d.amount_paid||0);
+        const total = parseFloat(d.total||0);
+        const pct = total>0 ? Math.min(100,Math.round(paid/total*100)) : 0;
+        return `<tr>
+          <td style="color:var(--muted);font-size:12px;">${esc(d.doc_number||'—')}</td>
+          <td>${esc(d.client_name||'—')}</td>
+          <td style="color:var(--muted);font-size:12px;">${fmtDate(d.date)}</td>
+          ${isInvoice?`<td style="color:var(--muted);font-size:12px;">${fmtDate(d.due_date)}</td>`:''}
+          <td style="color:var(--cyan)">${$$(d.total)}</td>
+          ${isInvoice?`<td><div>${$$(paid)}</div>${paid>0&&paid<total?`<div class="payment-progress"><div class="payment-progress-fill" style="width:${pct}%"></div></div>`:''}
+          </td>`:''}
+          <td>${statusBadge(d)}</td>
+          <td><div class="actions">
+            <button class="btn btn-ghost btn-sm btn-icon" title="Preview" onclick="openDocPreview('${d.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditDoc('${d.id}');openModal('doc-modal')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            ${(isInvoice||isQuote)&&getDocStatus(d)!=='paid'?`<button class="btn btn-ghost btn-sm btn-icon" title="Record Payment" onclick="openRecordPayment('${d.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </button>`:''}
+            ${isQuote?`<button class="btn btn-ghost btn-sm btn-icon" title="Convert to Invoice" onclick="openConvert('${d.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </button>`:''}
+            <button class="btn btn-danger btn-sm btn-icon" title="Delete" onclick="currentDocPreview=documents.find(x=>x.id==='${d.id}');deleteDoc('${d.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>` : '<div class="empty-state">No documents yet</div>';
+}
+
+// ── DOC PREVIEW ───────────────────────────────────────────────────────────────
+function openDocPreview(id){
+  const doc = documents.find(d=>d.id===id);
+  if(!doc) return;
+  currentDocPreview = doc;
+  const isInvoice = doc.type==='invoice';
+  const isQuote = doc.type==='quote';
+  document.getElementById('doc-preview-title').textContent = `${doc.doc_number||'Document'} — ${doc.client_name||''}`;
+
+  // Action buttons
+  const status = getDocStatus(doc);
+  let actions = `
+    <button class="btn btn-ghost btn-sm" onclick="exportDocPDF('${doc.id}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      PDF
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="openSendEmail('${doc.id}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22,2 15,22 11,13 2,9 22,2"/></svg>
+      Email
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="openEditDoc('${doc.id}');openModal('doc-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Edit
+    </button>`;
+  if((isInvoice || isQuote) && status!=='paid'){
+    actions += `<button class="btn btn-primary btn-sm" onclick="openRecordPayment('${doc.id}')">Record Payment</button>`;
+    actions += `<button class="btn btn-ghost btn-sm" onclick="markPaid('${doc.id}')">Mark Fully Paid</button>`;
+  }
+  if(isQuote){
+    actions += `<button class="btn btn-primary btn-sm" onclick="openConvert('${doc.id}')">→ Convert to Invoice</button>`;
+  }
+  actions += `<button class="btn btn-danger btn-sm" onclick="deleteDoc('${doc.id}')">Delete</button>`;
+  document.getElementById('doc-preview-actions').innerHTML = actions;
+
+  document.getElementById('doc-preview-content').innerHTML = buildDocHTML(doc);
+  openModal('doc-preview-modal');
+}
+
+function buildDocHTML(doc){
+  let items = [];
+  try { items = JSON.parse(doc.items||'[]'); } catch(e){}
+  const dtype = doc.discount_type||'none';
+  const discAmt = parseFloat(doc.discount_amount||0);
+  const subtotal = parseFloat(doc.subtotal||0);
+  const vatRate = parseFloat(doc.vat_rate??12.5);
+  const vatAmt = parseFloat(doc.vat_amount||0);
+  const total = parseFloat(doc.total||0);
+  const amtPaid = parseFloat(doc.amount_paid||0);
+  const balance = total - amtPaid;
+
+  const typeLabels = { invoice:'INVOICE', quote:'QUOTATION', po:'PURCHASE ORDER', receipt:'RECEIPT' };
+  const typeColors = { invoice:'#00d4ff', quote:'#8b5cf6', po:'#ffb020', receipt:'#00e5a0' };
+
+  // Payment history
+  const invPays = invoicePayments.filter(p=>p.invoice_id===doc.id);
+
+  return `<div style="background:#fff;padding:32px;color:#111;font-family:'DM Sans',sans-serif;font-size:13px;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;">
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;background:linear-gradient(135deg,#00d4ff,#8b5cf6,#e040fb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">THE DESIGN CIRCUIT</div>
+      <div style="color:#888;font-size:11px;margin-top:2px;">ddesigncircuit.com · +1(868) 757-4425</div>
+      <div style="color:#888;font-size:11px;">ddesigncircuit@gmail.com · Trinidad & Tobago</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:26px;font-family:'Syne',sans-serif;font-weight:800;color:#333;">${typeLabels[doc.type]||'DOCUMENT'}</div>
+      <div style="display:inline-block;background:${typeColors[doc.type]||'#ccc'}22;color:${typeColors[doc.type]||'#333'};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;margin-top:4px;">#${esc(doc.doc_number||'—')}</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+    <div><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Bill To</div>
+      <div style="font-weight:600;">${esc(doc.client_name||'—')}</div></div>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Date</div>
+      <div>${fmtDate(doc.date)}</div>
+      ${doc.due_date?`<div style="font-size:11px;color:#888;margin-top:2px;">Due: ${fmtDate(doc.due_date)}</div>`:''}
+    </div>
+  </div>
+
+  <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;">
+    <thead><tr style="background:#f5f5f5;">
+      <th style="padding:8px 12px;text-align:left;font-size:11px;color:#666;text-transform:uppercase;">Description</th>
+      <th style="padding:8px 12px;text-align:right;font-size:11px;color:#666;text-transform:uppercase;">Qty</th>
+      <th style="padding:8px 12px;text-align:right;font-size:11px;color:#666;text-transform:uppercase;">Unit Price</th>
+      <th style="padding:8px 12px;text-align:right;font-size:11px;color:#666;text-transform:uppercase;">Total</th>
+    </tr></thead>
+    <tbody>
+      ${items.map(i=>`<tr style="border-bottom:1px solid #eee;">
+        <td style="padding:10px 12px;">${esc(i.description||'—')}</td>
+        <td style="padding:10px 12px;text-align:right;">${i.qty}</td>
+        <td style="padding:10px 12px;text-align:right;">${$$(i.unit_price)}</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:500;">${$$(i.total)}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+
+  <div style="margin-left:auto;width:240px;">
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span>Subtotal</span><span>${$$(subtotal)}</span></div>
+    ${dtype!=='none'&&discAmt>0?`<div style="display:flex;justify-content:space-between;padding:4px 0;color:#e67e22;"><span>Discount</span><span>−${$$(discAmt)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span>After Discount</span><span>${$$(subtotal-discAmt)}</span></div>`:''}
+    <div style="display:flex;justify-content:space-between;padding:4px 0;"><span>VAT (${vatRate}%)</span><span>${$$(vatAmt)}</span></div>
+    <div style="display:flex;justify-content:space-between;font-weight:700;font-size:16px;border-top:2px solid #333;padding-top:8px;margin-top:6px;"><span>TOTAL</span><span>${$$(total)}</span></div>
+    ${amtPaid>0?`<div style="display:flex;justify-content:space-between;padding:4px 0;color:#27ae60;"><span>Amount Paid</span><span>${$$(amtPaid)}</span></div>
+    <div style="display:flex;justify-content:space-between;font-weight:600;padding:4px 0;color:${balance>0?'#e74c3c':'#27ae60'};"><span>Balance Due</span><span>${$$(balance)}</span></div>
+    <div style="height:6px;background:#eee;border-radius:3px;margin-top:8px;overflow:hidden;"><div style="height:100%;background:linear-gradient(90deg,#00d4ff,#8b5cf6);width:${Math.min(100,(amtPaid/total*100)).toFixed(0)}%;"></div></div>`:''}
+  </div>
+
+  ${invPays.length?`<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-radius:6px;">
+    <div style="font-size:12px;font-weight:600;margin-bottom:8px;color:#333;">Payment History</div>
+    ${invPays.map(p=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid #eee;">
+      <span>${fmtDate(p.date)} · ${p.method||'Cash'} ${p.reference?`(${esc(p.reference)})`:''}</span>
+      <span style="color:#27ae60;font-weight:600;">${$$(p.amount)}</span>
+    </div>`).join('')}
+  </div>`:''}
+
+  ${doc.notes?`<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-radius:6px;font-size:12px;color:#555;"><strong>Notes:</strong> ${esc(doc.notes)}</div>`:''}
+
+  <div style="margin-top:28px;padding-top:16px;border-top:1px solid #eee;font-size:10px;color:#aaa;text-align:center;">
+    The Design Circuit · ddesigncircuit.com · +1(868) 757-4425 · ddesigncircuit@gmail.com<br>
+    Thank you for your business.
+  </div>
+</div>`;
+}
+
+// ── PDF EXPORT ────────────────────────────────────────────────────────────────
+async function exportDocPDF(id){
+  const doc = documents.find(d=>d.id===id);
+  if(!doc) return;
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  let items = [];
+  try { items = JSON.parse(doc.items||'[]'); } catch(e){}
+  const typeLabels = { invoice:'INVOICE', quote:'QUOTATION', po:'PURCHASE ORDER', receipt:'RECEIPT' };
+
+  pdf.setFontSize(18); pdf.text('The Design Circuit', 14, 18);
+  pdf.setFontSize(8); pdf.setTextColor(120); pdf.text('ddesigncircuit.com | +1(868) 757-4425 | ddesigncircuit@gmail.com', 14, 25);
+  pdf.setTextColor(0);
+  pdf.setFontSize(16); pdf.text(typeLabels[doc.type]||'DOCUMENT', 150, 18);
+  pdf.setFontSize(9); pdf.text(`#${doc.doc_number||''}`, 150, 25);
+  pdf.setDrawColor(200); pdf.line(14, 30, 196, 30);
+  pdf.setFontSize(10);
+  pdf.text(`To: ${doc.client_name||'—'}`, 14, 38);
+  pdf.text(`Date: ${fmtDate(doc.date)}`, 150, 38);
+  if(doc.due_date) pdf.text(`Due: ${fmtDate(doc.due_date)}`, 150, 44);
+
+  let y = 52;
+  // Header row
+  pdf.setFillColor(245,245,245); pdf.rect(14, y-5, 182, 8, 'F');
+  pdf.setFontSize(8); pdf.setTextColor(100);
+  pdf.text('Description', 16, y); pdf.text('Qty', 130, y); pdf.text('Unit Price', 148, y); pdf.text('Total', 180, y);
+  y += 6; pdf.setTextColor(0); pdf.setFontSize(9);
+  items.forEach(it=>{
+    if(y>270){pdf.addPage();y=20;}
+    pdf.text(String(it.description||'').substring(0,50), 16, y);
+    pdf.text(String(it.qty||1), 130, y);
+    pdf.text(String(it.unit_price||0), 148, y);
+    pdf.text(`$${parseFloat(it.total||0).toFixed(2)}`, 175, y, {align:'right'});
+    y+=7;
+    pdf.setDrawColor(230); pdf.line(14, y-1, 196, y-1);
+  });
+  y += 4;
+  const subtotal = parseFloat(doc.subtotal||0);
+  const discAmt = parseFloat(doc.discount_amount||0);
+  const vatAmt = parseFloat(doc.vat_amount||0);
+  const total = parseFloat(doc.total||0);
+  const amtPaid = parseFloat(doc.amount_paid||0);
+
+  pdf.setFontSize(9);
+  pdf.text('Subtotal:', 148, y); pdf.text(`$${subtotal.toFixed(2)}`, 196, y, {align:'right'}); y+=6;
+  if(discAmt>0){ pdf.text('Discount:', 148, y); pdf.text(`-$${discAmt.toFixed(2)}`, 196, y, {align:'right'}); y+=6; }
+  pdf.text(`VAT (${doc.vat_rate||12.5}%):`, 148, y); pdf.text(`$${vatAmt.toFixed(2)}`, 196, y, {align:'right'}); y+=6;
+  pdf.setDrawColor(0); pdf.line(148, y, 196, y); y+=4;
+  pdf.setFontSize(11); pdf.setFont(undefined,'bold'); pdf.text('TOTAL:', 148, y); pdf.text(`$${total.toFixed(2)}`, 196, y, {align:'right'}); y+=6;
+  pdf.setFont(undefined,'normal');
+  if(amtPaid>0){ pdf.setFontSize(9); pdf.text(`Paid: $${amtPaid.toFixed(2)}`, 148, y); y+=5; pdf.text(`Balance: $${(total-amtPaid).toFixed(2)}`, 148, y); }
+  if(doc.notes){ y+=8; pdf.setFontSize(9); pdf.text('Notes: '+doc.notes, 14, y, {maxWidth:182}); }
+  y += 12; pdf.setFontSize(8); pdf.setTextColor(150);
+  pdf.text('The Design Circuit · ddesigncircuit.com · Thank you for your business.', 105, y, {align:'center'});
+  pdf.save(`${doc.doc_number||'document'}.pdf`);
+}
+
+// ── PARTIAL PAYMENTS ──────────────────────────────────────────────────────────
+function openRecordPayment(invoiceId){
+  const doc = documents.find(d=>d.id===invoiceId);
+  if(!doc) return;
+  const total = parseFloat(doc.total||0);
+  const paid = parseFloat(doc.amount_paid||0);
+  const balance = total - paid;
+  document.getElementById('rp-invoice-id').value = invoiceId;
+  document.getElementById('rp-date').value = today();
+  document.getElementById('rp-amount').value = balance.toFixed(2);
+  document.getElementById('rp-amount').max = balance;
+  document.getElementById('rp-reference').value = '';
+  document.getElementById('rp-notes').value = '';
+  document.getElementById('rp-balance-info').innerHTML = `
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:var(--muted)">Invoice Total</span><span>${$$(total)}</span></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:var(--muted)">Already Paid</span><span style="color:var(--green)">${$$(paid)}</span></div>
+    <div style="display:flex;justify-content:space-between;font-weight:600;"><span>Balance Due</span><span style="color:var(--amber)">${$$(balance)}</span></div>
+  `;
+  openModal('record-payment-modal');
+}
+
+async function saveInvoicePayment(){
+  const invoiceId = document.getElementById('rp-invoice-id').value;
+  const amount = parseFloat(document.getElementById('rp-amount').value)||0;
+  const date = document.getElementById('rp-date').value;
+  if(!amount||amount<=0){ toast('Enter a valid amount','error'); return; }
+  if(!date){ toast('Enter a date','error'); return; }
+  const doc = documents.find(d=>d.id===invoiceId);
+  if(!doc) return;
+
+  const data = {
+    invoice_id: invoiceId,
+    amount, date,
+    method: document.getElementById('rp-method').value,
+    reference: document.getElementById('rp-reference').value||null,
+    notes: document.getElementById('rp-notes').value||null
+  };
+
+  showLoading();
+  try {
+    const res = await sb.post('invoice_payments', data);
+    if(res[0]) invoicePayments.unshift(res[0]);
+    const newPaid = (parseFloat(doc.amount_paid||0)) + amount;
+    const newStatus = newPaid >= parseFloat(doc.total||0) ? 'paid' : 'partial';
+    await sb.patch('documents', invoiceId, { amount_paid: newPaid, status: newStatus });
+    doc.amount_paid = newPaid; doc.status = newStatus;
+    toast('Payment recorded');
+    closeModal('record-payment-modal');
+    closeModal('doc-preview-modal');
+    renderPage('invoices');
+    renderDashboard();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── QUOTE → INVOICE CONVERSION ────────────────────────────────────────────────
+function openConvert(quoteId){
+  document.getElementById('convert-quote-id').value = quoteId;
+  document.getElementById('convert-date').value = today();
+  document.getElementById('convert-due-date').value = '';
+  closeModal('doc-preview-modal');
+  openModal('convert-modal');
+}
+
+async function confirmConvert(){
+  const quoteId = document.getElementById('convert-quote-id').value;
+  const quote = documents.find(d=>d.id===quoteId);
+  if(!quote){ toast('Quote not found','error'); return; }
+  const date = document.getElementById('convert-date').value;
+  const due = document.getElementById('convert-due-date').value;
+  if(!date){ toast('Set invoice date','error'); return; }
+
+  const data = {
+    type:'invoice',
+    doc_number: getNextDocNum('invoice'),
+    client_id: quote.client_id, client_name: quote.client_name,
+    date, due_date: due||null,
+    items: quote.items,
+    subtotal: quote.subtotal, vat_rate: quote.vat_rate, vat_amount: quote.vat_amount,
+    total: quote.total,
+    discount_type: quote.discount_type||'none',
+    discount_value: quote.discount_value||0,
+    discount_amount: quote.discount_amount||0,
+    notes: quote.notes, status:'unpaid',
+    amount_paid: 0,
+    converted_from: quoteId
+  };
+
+  showLoading();
+  try {
+    const res = await sb.post('documents', data);
+    if(res[0]) documents.unshift(res[0]);
+    toast('Invoice created from quote');
+    closeModal('convert-modal');
+    goPage('invoices');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── EMAIL ─────────────────────────────────────────────────────────────────────
+function openSendEmail(id){
+  const doc = documents.find(d=>d.id===id);
+  if(!doc){ toast('Document not found','error'); return; }
+  currentDocPreview = doc;
+  const client = clients.find(c=>c.id===doc.client_id);
+  document.getElementById('email-to').value = client?.email || '';
+  document.getElementById('email-to-name').value = doc.client_name || '';
+  const typeLabels = { invoice:'Invoice', quote:'Quotation', po:'Purchase Order', receipt:'Receipt' };
+  const defaultMsg = `Hi ${doc.client_name||'there'},\n\nPlease find your ${typeLabels[doc.type]||'document'} #${doc.doc_number||''} below.\n\nThank you for choosing The Design Circuit.`;
+  document.getElementById('email-subject').value = `${typeLabels[doc.type]||'Document'} #${doc.doc_number||''} from The Design Circuit`;
+  document.getElementById('email-message').value = defaultMsg;
+  // Live preview updates when message changes
+  refreshEmailPreview();
+  openModal('email-modal');
+}
+
+function refreshEmailPreview(){
+  if(!currentDocPreview) return;
+  const msg = document.getElementById('email-message').value;
+  document.getElementById('email-preview').innerHTML = buildEmailHTML(currentDocPreview, msg);
+}
+
+async function sendEmail(){
+  const settings = JSON.parse(localStorage.getItem('tdc_emailjs')||'{}');
+  if(!settings.publicKey){ toast('Configure EmailJS settings first','error'); return; }
+  const to = document.getElementById('email-to').value;
+  if(!to){ toast('Enter recipient email','error'); return; }
+  const msg = document.getElementById('email-message').value;
+  showLoading();
+  try {
+    emailjs.init(settings.publicKey);
+    await emailjs.send(settings.serviceId, settings.templateId, {
+      to_email: to,
+      to_name: document.getElementById('email-to-name').value,
+      subject: document.getElementById('email-subject').value,
+      message: msg,
+      doc_html: buildEmailHTML(currentDocPreview, msg)
+    });
+    toast('Email sent');
+    closeModal('email-modal');
+  } catch(e){ toast('Email failed: '+JSON.stringify(e),'error'); } finally { hideLoading(); }
+}
+
+// ── EMAIL-SAFE HTML BUILDER ───────────────────────────────────────────────────
+// Table-based layout, 100% inline styles, no flex/grid, no CSS gradients on text.
+// Renders identically in Gmail, Outlook, Apple Mail, and mobile clients.
+function buildEmailHTML(doc, introMessage){
+  let items = [];
+  try { items = JSON.parse(doc.items||'[]'); } catch(e){}
+
+  const dtype = doc.discount_type||'none';
+  const discAmt = parseFloat(doc.discount_amount||0);
+  const subtotal = parseFloat(doc.subtotal||0);
+  const vatRate = parseFloat(doc.vat_rate??12.5);
+  const vatAmt = parseFloat(doc.vat_amount||0);
+  const total = parseFloat(doc.total||0);
+  const amtPaid = parseFloat(doc.amount_paid||0);
+  const balance = total - amtPaid;
+  const invPays = invoicePayments.filter(p=>p.invoice_id===doc.id);
+
+  const typeLabels  = { invoice:'INVOICE', quote:'QUOTATION', po:'PURCHASE ORDER', receipt:'RECEIPT' };
+  const typeAccents = { invoice:'#0099bb', quote:'#6d3fc7', po:'#cc8800', receipt:'#00a872' };
+  const accent = typeAccents[doc.type] || '#0099bb';
+  const label  = typeLabels[doc.type]  || 'DOCUMENT';
+
+  // Convert plain-text intro message to HTML paragraphs
+  const msgHtml = (introMessage||'').split('\n').map(l=>l.trim()?`<p style="margin:0 0 10px 0;font-size:14px;color:#444;line-height:1.6;">${esc(l)}</p>`:'<br/>').join('');
+
+  // Line item rows
+  const itemRows = items.map((it,i)=>`
+    <tr style="background:${i%2===0?'#fff':'#f9f9f9'};">
+      <td style="padding:10px 14px;font-size:13px;color:#222;border-bottom:1px solid #eee;">${esc(it.description||'—')}</td>
+      <td style="padding:10px 14px;font-size:13px;color:#555;text-align:center;border-bottom:1px solid #eee;">${it.qty}</td>
+      <td style="padding:10px 14px;font-size:13px;color:#555;text-align:right;border-bottom:1px solid #eee;">${$$(it.unit_price)}</td>
+      <td style="padding:10px 14px;font-size:13px;color:#222;font-weight:600;text-align:right;border-bottom:1px solid #eee;">${$$(it.total)}</td>
+    </tr>`).join('');
+
+  // Totals rows
+  let totalsRows = `
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:13px;color:#666;">Subtotal</td>
+      <td style="padding:6px 14px;font-size:13px;color:#222;text-align:right;">${$$(subtotal)}</td>
+    </tr>`;
+  if(dtype!=='none' && discAmt>0){
+    totalsRows += `
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:13px;color:#cc6600;">Discount</td>
+      <td style="padding:6px 14px;font-size:13px;color:#cc6600;text-align:right;">&#8722;${$$(discAmt)}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:13px;color:#666;">After Discount</td>
+      <td style="padding:6px 14px;font-size:13px;color:#222;text-align:right;">${$$(subtotal-discAmt)}</td>
+    </tr>`;
+  }
+  totalsRows += `
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:13px;color:#666;">VAT (${vatRate}%)</td>
+      <td style="padding:6px 14px;font-size:13px;color:#222;text-align:right;">${$$(vatAmt)}</td>
+    </tr>
+    <tr style="background:#f0f0f0;">
+      <td colspan="2" style="padding:10px 14px;font-size:16px;font-weight:700;color:#111;border-top:2px solid #333;">TOTAL</td>
+      <td style="padding:10px 14px;font-size:16px;font-weight:700;color:#111;text-align:right;border-top:2px solid #333;">${$$(total)}</td>
+    </tr>`;
+  if(amtPaid>0){
+    totalsRows += `
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:13px;color:#27ae60;">Amount Paid</td>
+      <td style="padding:6px 14px;font-size:13px;color:#27ae60;text-align:right;">${$$(amtPaid)}</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="padding:6px 14px;font-size:14px;font-weight:700;color:${balance>0?'#c0392b':'#27ae60'};">Balance Due</td>
+      <td style="padding:6px 14px;font-size:14px;font-weight:700;color:${balance>0?'#c0392b':'#27ae60'};text-align:right;">${$$(balance)}</td>
+    </tr>`;
+  }
+
+  // Payment history section
+  const payHistorySection = invPays.length ? `
+    <tr><td style="padding:0 0 16px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;">
+        <tr style="background:#f5f5f5;">
+          <td colspan="3" style="padding:10px 14px;font-size:12px;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:.05em;">Payment History</td>
+        </tr>
+        ${invPays.map(p=>`
+        <tr style="border-top:1px solid #eee;">
+          <td style="padding:8px 14px;font-size:12px;color:#555;">${fmtDate(p.date)}</td>
+          <td style="padding:8px 14px;font-size:12px;color:#555;">${esc(p.method||'Cash')}${p.reference?` &mdash; ${esc(p.reference)}`:''}</td>
+          <td style="padding:8px 14px;font-size:12px;color:#27ae60;font-weight:600;text-align:right;">${$$(p.amount)}</td>
+        </tr>`).join('')}
+      </table>
+    </td></tr>` : '';
+
+  // Notes section
+  const notesSection = doc.notes ? `
+    <tr><td style="padding:0 0 16px 0;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fffbf0;border-left:3px solid #f0c040;border-radius:0 4px 4px 0;">
+        <tr><td style="padding:12px 16px;font-size:12px;color:#555;line-height:1.6;">
+          <strong style="color:#333;">Notes:</strong> ${esc(doc.notes)}
+        </td></tr>
+      </table>
+    </td></tr>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>${label} ${esc(doc.doc_number||'')}</title></head>
+<body style="margin:0;padding:0;background:#f4f4f8;font-family:Arial,Helvetica,sans-serif;">
+
+<!-- Outer wrapper -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f8;padding:24px 0;">
+<tr><td align="center">
+
+<!-- Email container -->
+<table width="620" cellpadding="0" cellspacing="0" border="0" style="max-width:620px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+
+  <!-- Header bar -->
+  <tr>
+    <td style="background:#0a0a14;padding:24px 32px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+            <div style="font-size:18px;font-weight:800;color:#ffffff;letter-spacing:.02em;">THE DESIGN CIRCUIT</div>
+            <div style="font-size:11px;color:#888;margin-top:3px;">ddesigncircuit.com &nbsp;&middot;&nbsp; +1(868) 757-4425</div>
+          </td>
+          <td align="right" valign="middle">
+            <div style="display:inline-block;background:${accent};color:#ffffff;padding:5px 14px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;">${label}</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- Intro message -->
+  <tr>
+    <td style="padding:28px 32px 8px 32px;">
+      ${msgHtml}
+    </td>
+  </tr>
+
+  <!-- Document card -->
+  <tr>
+    <td style="padding:8px 32px 28px 32px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;">
+
+        <!-- Document header -->
+        <tr style="background:#fafafa;">
+          <td style="padding:20px 24px;border-bottom:2px solid ${accent};">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td>
+                  <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Document</div>
+                  <div style="font-size:22px;font-weight:700;color:#111;">${label}</div>
+                  <div style="font-size:13px;color:${accent};font-weight:600;margin-top:2px;">#${esc(doc.doc_number||'—')}</div>
+                </td>
+                <td align="right" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="right">
+                        <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Bill To</div>
+                        <div style="font-size:14px;font-weight:600;color:#111;">${esc(doc.client_name||'—')}</div>
+                      </td>
+                    </tr>
+                    <tr><td style="padding-top:10px;" align="right">
+                      <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;">Date</div>
+                      <div style="font-size:13px;color:#333;">${fmtDate(doc.date)}</div>
+                      ${doc.due_date?`<div style="font-size:12px;color:#999;margin-top:2px;">Due: ${fmtDate(doc.due_date)}</div>`:''}
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Line items table -->
+        <tr>
+          <td>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr style="background:#f0f0f0;">
+                  <th style="padding:9px 14px;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.05em;text-align:left;font-weight:600;">Description</th>
+                  <th style="padding:9px 14px;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.05em;text-align:center;font-weight:600;width:50px;">Qty</th>
+                  <th style="padding:9px 14px;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.05em;text-align:right;font-weight:600;width:100px;">Unit Price</th>
+                  <th style="padding:9px 14px;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.05em;text-align:right;font-weight:600;width:100px;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemRows}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Totals -->
+        <tr style="background:#fafafa;border-top:1px solid #e5e5e5;">
+          <td style="padding:4px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              ${totalsRows}
+            </table>
+          </td>
+        </tr>
+
+      </table><!-- /document card -->
+    </td>
+  </tr>
+
+  <!-- Payment history & notes -->
+  ${payHistorySection || notesSection ? `
+  <tr><td style="padding:0 32px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      ${payHistorySection}
+      ${notesSection}
+    </table>
+  </td></tr>` : ''}
+
+  <!-- Footer -->
+  <tr>
+    <td style="background:#0a0a14;padding:20px 32px;text-align:center;">
+      <div style="font-size:11px;color:#666;line-height:1.8;">
+        The Design Circuit &nbsp;&middot;&nbsp; ddesigncircuit.com &nbsp;&middot;&nbsp; +1(868) 757-4425<br/>
+        ddesigncircuit@gmail.com &nbsp;&middot;&nbsp; Trinidad &amp; Tobago<br/>
+        <span style="color:#444;">Thank you for your business.</span>
+      </div>
+    </td>
+  </tr>
+
+</table><!-- /email container -->
+
+</td></tr>
+</table><!-- /outer wrapper -->
+
+</body>
+</html>`;
+}
+
+function saveEmailSettings(){
+  const s = {
+    publicKey: document.getElementById('ejs-public-key').value,
+    serviceId: document.getElementById('ejs-service-id').value,
+    templateId: document.getElementById('ejs-template-id').value,
+    fromEmail: document.getElementById('ejs-from-email').value
+  };
+  localStorage.setItem('tdc_emailjs', JSON.stringify(s));
+  toast('Email settings saved');
+}
+
+async function testEmail(){
+  const settings = JSON.parse(localStorage.getItem('tdc_emailjs')||'{}');
+  if(!settings.publicKey){ toast('Save settings first','error'); return; }
+  showLoading();
+  try {
+    emailjs.init(settings.publicKey);
+    await emailjs.send(settings.serviceId, settings.templateId, {
+      to_email: settings.fromEmail||'',
+      to_name: 'TDC Test',
+      subject: 'Test email from TDC Manager',
+      message: 'Your EmailJS integration is working correctly.',
+      doc_html: '<p style="padding:20px;">Test email from TDC Business Manager.</p>'
+    });
+    toast('Test email sent');
+  } catch(e){ toast('Test failed: '+JSON.stringify(e),'error'); } finally { hideLoading(); }
+}
+
+function loadEmailSettings(){
+  const s = JSON.parse(localStorage.getItem('tdc_emailjs')||'{}');
+  document.getElementById('ejs-public-key').value = s.publicKey||'';
+  document.getElementById('ejs-service-id').value = s.serviceId||'';
+  document.getElementById('ejs-template-id').value = s.templateId||'';
+  document.getElementById('ejs-from-email').value = s.fromEmail||'';
+}
+
+// ── SAVED SERVICES ────────────────────────────────────────────────────────────
+function renderServicesTable(){
+  document.getElementById('services-table').innerHTML = savedServices.length ? `
+    <table class="tbl">
+      <thead><tr><th>Name</th><th>Description</th><th>Unit Price</th><th>Category</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody>${savedServices.map(s=>`
+        <tr>
+          <td style="font-weight:500;">${esc(s.name)}</td>
+          <td style="color:var(--muted)">${esc(s.description||'—')}</td>
+          <td style="color:var(--cyan)">${$$(s.unit_price)}</td>
+          <td><span class="badge badge-quote">${esc(s.category||'General')}</span></td>
+          <td><div class="actions">
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditService('${s.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteService('${s.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty-state">No saved services yet. Add your common services to quickly insert them into documents.</div>';
+}
+
+function loadServiceChips(){
+  const chips = document.getElementById('line-items-chips');
+  if(!savedServices.length){ chips.innerHTML=''; return; }
+  chips.innerHTML = savedServices.map(s=>`
+    <span class="service-chip" onclick="addLineItemFromService('${s.id}')">${esc(s.name)}</span>
+  `).join('');
+}
+
+function addLineItemFromService(id){
+  const s = savedServices.find(x=>x.id===id);
+  if(!s) return;
+  addLineItem({ description: s.description||s.name, qty:1, unit_price: s.unit_price, total: s.unit_price });
+  updateTotalsPreview();
+}
+
+function openAddServiceModal(){
+  document.getElementById('service-modal-title').textContent = 'Add Service';
+  document.getElementById('service-edit-id').value = '';
+  document.getElementById('service-name').value = '';
+  document.getElementById('service-description').value = '';
+  document.getElementById('service-price').value = '';
+  document.getElementById('service-category').value = '';
+  openModal('service-modal');
+}
+
+function openEditService(id){
+  const s = savedServices.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('service-modal-title').textContent = 'Edit Service';
+  document.getElementById('service-edit-id').value = s.id;
+  document.getElementById('service-name').value = s.name||'';
+  document.getElementById('service-description').value = s.description||'';
+  document.getElementById('service-price').value = s.unit_price||'';
+  document.getElementById('service-category').value = s.category||'';
+  openModal('service-modal');
+}
+
+async function saveService(){
+  const id = document.getElementById('service-edit-id').value;
+  const data = {
+    name: document.getElementById('service-name').value.trim(),
+    description: document.getElementById('service-description').value.trim(),
+    unit_price: parseFloat(document.getElementById('service-price').value)||0,
+    category: document.getElementById('service-category').value.trim()
+  };
+  if(!data.name){ toast('Enter service name','error'); return; }
+  showLoading();
+  try {
+    if(id){
+      await sb.patch('line_item_templates', id, data);
+      const idx = savedServices.findIndex(s=>s.id===id);
+      if(idx>=0) Object.assign(savedServices[idx], data);
+      toast('Service updated');
+    } else {
+      const res = await sb.post('line_item_templates', data);
+      if(res[0]) savedServices.push(res[0]);
+      savedServices.sort((a,b)=>a.name.localeCompare(b.name));
+      toast('Service added');
+    }
+    closeModal('service-modal');
+    renderServicesTable();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deleteService(id){
+  if(!confirm('Delete this service?')) return;
+  showLoading();
+  try {
+    await sb.del('line_item_templates', id);
+    savedServices = savedServices.filter(s=>s.id!==id);
+    renderServicesTable();
+    toast('Service deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── CLIENTS ───────────────────────────────────────────────────────────────────
+function renderClientsTable(){
+  document.getElementById('clients-table').innerHTML = clients.length ? `
+    <table class="tbl">
+      <thead><tr><th>Name</th><th>Contact</th><th>Email</th><th>Phone</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody>${clients.map(c=>`
+        <tr>
+          <td style="font-weight:500;">${esc(c.name)}</td>
+          <td style="color:var(--muted)">${esc(c.contact||'—')}</td>
+          <td>${esc(c.email||'—')}</td>
+          <td style="color:var(--muted)">${esc(c.phone||'—')}</td>
+          <td><div class="actions">
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditClientModal('${c.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteClient('${c.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty-state">No clients yet</div>';
+}
+
+function openAddClientModal(){
+  document.getElementById('client-modal-title').textContent = 'Add Client';
+  document.getElementById('client-edit-id').value = '';
+  ['client-name','client-contact','client-email','client-phone','client-address','client-notes'].forEach(id=>document.getElementById(id).value='');
+  openModal('client-modal');
+}
+
+function openEditClientModal(id){
+  const c = clients.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('client-modal-title').textContent = 'Edit Client';
+  document.getElementById('client-edit-id').value = c.id;
+  document.getElementById('client-name').value = c.name||'';
+  document.getElementById('client-contact').value = c.contact||'';
+  document.getElementById('client-email').value = c.email||'';
+  document.getElementById('client-phone').value = c.phone||'';
+  document.getElementById('client-address').value = c.address||'';
+  document.getElementById('client-notes').value = c.notes||'';
+  openModal('client-modal');
+}
+
+async function saveClient(){
+  const id = document.getElementById('client-edit-id').value;
+  const data = {
+    name: document.getElementById('client-name').value.trim(),
+    contact: document.getElementById('client-contact').value.trim(),
+    email: document.getElementById('client-email').value.trim(),
+    phone: document.getElementById('client-phone').value.trim(),
+    address: document.getElementById('client-address').value.trim(),
+    notes: document.getElementById('client-notes').value.trim()
+  };
+  if(!data.name){ toast('Enter client name','error'); return; }
+  showLoading();
+  try {
+    if(id){
+      await sb.patch('clients', id, data);
+      const idx = clients.findIndex(c=>c.id===id);
+      if(idx>=0) Object.assign(clients[idx], data);
+      toast('Client updated');
+    } else {
+      const res = await sb.post('clients', data);
+      if(res[0]) clients.push(res[0]);
+      clients.sort((a,b)=>a.name.localeCompare(b.name));
+      toast('Client added');
+    }
+    closeModal('client-modal');
+    renderClientsTable();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deleteClient(id){
+  if(!confirm('Delete this client?')) return;
+  showLoading();
+  try {
+    await sb.del('clients', id);
+    clients = clients.filter(c=>c.id!==id);
+    renderClientsTable();
+    toast('Client deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── SUPPLIERS ─────────────────────────────────────────────────────────────────
+function renderSuppliersTable(){
+  document.getElementById('suppliers-table').innerHTML = suppliers.length ? `
+    <table class="tbl">
+      <thead><tr><th>Name</th><th>Contact</th><th>Email</th><th>Category</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody>${suppliers.map(s=>`
+        <tr>
+          <td style="font-weight:500;">${esc(s.name)}</td>
+          <td style="color:var(--muted)">${esc(s.contact||'—')}</td>
+          <td>${esc(s.email||'—')}</td>
+          <td><span class="badge badge-quote">${esc(s.category||'—')}</span></td>
+          <td><div class="actions">
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditSupplierModal('${s.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteSupplier('${s.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty-state">No suppliers yet</div>';
+}
+
+function openAddSupplierModal(){
+  document.getElementById('supplier-modal-title').textContent = 'Add Supplier';
+  document.getElementById('supplier-edit-id').value = '';
+  ['supplier-name','supplier-contact','supplier-email','supplier-phone','supplier-category','supplier-address','supplier-notes'].forEach(id=>document.getElementById(id).value='');
+  openModal('supplier-modal');
+}
+
+function openEditSupplierModal(id){
+  const s = suppliers.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('supplier-modal-title').textContent = 'Edit Supplier';
+  document.getElementById('supplier-edit-id').value = s.id;
+  document.getElementById('supplier-name').value = s.name||'';
+  document.getElementById('supplier-contact').value = s.contact||'';
+  document.getElementById('supplier-email').value = s.email||'';
+  document.getElementById('supplier-phone').value = s.phone||'';
+  document.getElementById('supplier-category').value = s.category||'';
+  document.getElementById('supplier-address').value = s.address||'';
+  document.getElementById('supplier-notes').value = s.notes||'';
+  openModal('supplier-modal');
+}
+
+async function saveSupplier(){
+  const id = document.getElementById('supplier-edit-id').value;
+  const data = {
+    name: document.getElementById('supplier-name').value.trim(),
+    contact: document.getElementById('supplier-contact').value.trim(),
+    email: document.getElementById('supplier-email').value.trim(),
+    phone: document.getElementById('supplier-phone').value.trim(),
+    category: document.getElementById('supplier-category').value.trim(),
+    address: document.getElementById('supplier-address').value.trim(),
+    notes: document.getElementById('supplier-notes').value.trim()
+  };
+  if(!data.name){ toast('Enter supplier name','error'); return; }
+  showLoading();
+  try {
+    if(id){
+      await sb.patch('suppliers', id, data);
+      const idx = suppliers.findIndex(s=>s.id===id);
+      if(idx>=0) Object.assign(suppliers[idx], data);
+      toast('Supplier updated');
+    } else {
+      const res = await sb.post('suppliers', data);
+      if(res[0]) suppliers.push(res[0]);
+      suppliers.sort((a,b)=>a.name.localeCompare(b.name));
+      toast('Supplier added');
+    }
+    closeModal('supplier-modal');
+    renderSuppliersTable();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deleteSupplier(id){
+  if(!confirm('Delete this supplier?')) return;
+  showLoading();
+  try {
+    await sb.del('suppliers', id);
+    suppliers = suppliers.filter(s=>s.id!==id);
+    renderSuppliersTable();
+    toast('Supplier deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── PAYMENTS ──────────────────────────────────────────────────────────────────
+function renderPaymentsTable(){
+  const total = payments.reduce((s,p)=>s+parseFloat(p.amount||0),0);
+  const sel = document.getElementById('payment-client');
+  sel.innerHTML = `<option value="">— Select Client —</option>` +
+    clients.map(c=>`<option value="${c.id}" data-name="${esc(c.name)}">${esc(c.name)}</option>`).join('');
+
+  document.getElementById('payments-table').innerHTML = payments.length ? `
+    <table class="tbl">
+      <thead><tr><th>Client</th><th>Date</th><th>Amount</th><th>Method</th><th>Reference</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody>
+        ${payments.map(p=>`
+        <tr>
+          <td>${esc(p.client_name||'—')}</td>
+          <td style="color:var(--muted);font-size:12px;">${fmtDate(p.date)}</td>
+          <td style="color:var(--green)">${$$(p.amount)}</td>
+          <td style="color:var(--muted)">${esc(p.method||'—')}</td>
+          <td style="color:var(--muted);font-size:12px;">${esc(p.reference||'—')}</td>
+          <td><div class="actions">
+            ${p.receipt_url?`<button class="btn btn-ghost btn-sm btn-icon" title="View Receipt" onclick="${p.receipt_url.toLowerCase().includes('.pdf')?`window.open('${p.receipt_url}','_blank')`:`openLightbox('${p.receipt_url}')`}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--green)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+            </button>`:''}
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditPaymentModal('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deletePayment('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`).join('')}
+        <tr class="total-row"><td colspan="2">TOTAL</td><td>${$$(total)}</td><td colspan="3"></td></tr>
+      </tbody>
+    </table>` : '<div class="empty-state">No payments logged yet</div>';
+}
+
+function openAddPaymentModal(){
+  document.getElementById('payment-modal-title').textContent = 'Log Payment';
+  document.getElementById('payment-edit-id').value = '';
+  document.getElementById('payment-client').value = '';
+  document.getElementById('payment-amount').value = '';
+  document.getElementById('payment-date').value = today();
+  document.getElementById('payment-method').value = 'Cash';
+  document.getElementById('payment-reference').value = '';
+  document.getElementById('payment-notes').value = '';
+  resetUpload('payment');
+  openModal('payment-modal');
+}
+
+function openEditPaymentModal(id){
+  const p = payments.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('payment-modal-title').textContent = 'Edit Payment';
+  document.getElementById('payment-edit-id').value = p.id;
+  document.getElementById('payment-client').value = p.client_id||'';
+  document.getElementById('payment-amount').value = p.amount||'';
+  document.getElementById('payment-date').value = p.date||'';
+  document.getElementById('payment-method').value = p.method||'Cash';
+  document.getElementById('payment-reference').value = p.reference||'';
+  document.getElementById('payment-notes').value = p.notes||'';
+  resetUpload('payment');
+  if(p.receipt_url) showExistingUpload('payment', p.receipt_url);
+  document.getElementById('payment-existing-receipt').value = p.receipt_url||'';
+  openModal('payment-modal');
+}
+
+async function savePayment(){
+  const id = document.getElementById('payment-edit-id').value;
+  const clientSel = document.getElementById('payment-client');
+  const data = {
+    client_id: clientSel.value||null,
+    client_name: clientSel.options[clientSel.selectedIndex]?.dataset.name || clientSel.options[clientSel.selectedIndex]?.text || '',
+    amount: parseFloat(document.getElementById('payment-amount').value)||0,
+    date: document.getElementById('payment-date').value,
+    method: document.getElementById('payment-method').value,
+    reference: document.getElementById('payment-reference').value||null,
+    notes: document.getElementById('payment-notes').value||null
+  };
+  if(!data.amount||!data.date){ toast('Fill required fields','error'); return; }
+  showLoading();
+  try {
+    // Upload receipt image if a new file was selected
+    const file = document.getElementById('payment-receipt-file').files[0];
+    if(file){
+      const url = await uploadReceipt(file, 'payment-receipts');
+      if(url) data.receipt_url = url;
+    } else {
+      // Keep existing if no new file chosen
+      const existing = document.getElementById('payment-existing-receipt').value;
+      if(existing) data.receipt_url = existing;
+    }
+    if(id){
+      await sb.patch('payments', id, data);
+      const idx = payments.findIndex(p=>p.id===id);
+      if(idx>=0) Object.assign(payments[idx], data);
+      toast('Payment updated');
+    } else {
+      const res = await sb.post('payments', data);
+      if(res[0]) payments.unshift(res[0]);
+      toast('Payment logged');
+    }
+    closeModal('payment-modal');
+    renderPaymentsTable();
+    renderDashboard();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deletePayment(id){
+  if(!confirm('Delete this payment?')) return;
+  showLoading();
+  try {
+    await sb.del('payments', id);
+    payments = payments.filter(p=>p.id!==id);
+    renderPaymentsTable();
+    renderDashboard();
+    toast('Payment deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── EXPENSES ──────────────────────────────────────────────────────────────────
+function renderExpensesTable(){
+  const total = expenses.reduce((s,e)=>s+parseFloat(e.amount||0),0);
+  const supSel = document.getElementById('expense-supplier');
+  supSel.innerHTML = `<option value="">— None —</option>` +
+    suppliers.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+
+  document.getElementById('expenses-table').innerHTML = expenses.length ? `
+    <table class="tbl">
+      <thead><tr><th>Description</th><th>Date</th><th>Category</th><th>Vendor</th><th>Amount</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody>
+        ${expenses.map(e=>`
+        <tr>
+          <td>${esc(e.description||'—')}</td>
+          <td style="color:var(--muted);font-size:12px;">${fmtDate(e.date)}</td>
+          <td><span class="badge badge-expense">${esc(e.category||'Other')}</span></td>
+          <td style="color:var(--muted)">${esc(e.vendor||(suppliers.find(s=>s.id===e.supplier_id)?.name)||'—')}</td>
+          <td style="color:var(--amber)">${$$(e.amount)}</td>
+          <td><div class="actions">
+            ${e.receipt_url?`<button class="btn btn-ghost btn-sm btn-icon" title="View Receipt" onclick="${e.receipt_url.toLowerCase().includes('.pdf')?`window.open('${e.receipt_url}','_blank')`:`openLightbox('${e.receipt_url}')`}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--amber)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+            </button>`:''}
+            <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditExpenseModal('${e.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="deleteExpense('${e.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            </button>
+          </div></td>
+        </tr>`).join('')}
+        <tr class="total-row"><td colspan="4">TOTAL</td><td>${$$(total)}</td><td></td></tr>
+      </tbody>
+    </table>` : '<div class="empty-state">No expenses logged yet</div>';
+}
+
+function openAddExpenseModal(){
+  document.getElementById('expense-modal-title').textContent = 'Log Expense';
+  document.getElementById('expense-edit-id').value = '';
+  document.getElementById('expense-desc').value = '';
+  document.getElementById('expense-amount').value = '';
+  document.getElementById('expense-date').value = today();
+  document.getElementById('expense-category').value = 'Software';
+  document.getElementById('expense-supplier').value = '';
+  document.getElementById('expense-vendor').value = '';
+  document.getElementById('expense-notes').value = '';
+  resetUpload('expense');
+  openModal('expense-modal');
+}
+
+function openEditExpenseModal(id){
+  const e = expenses.find(x=>x.id===id);
+  if(!e) return;
+  document.getElementById('expense-modal-title').textContent = 'Edit Expense';
+  document.getElementById('expense-edit-id').value = e.id;
+  document.getElementById('expense-desc').value = e.description||'';
+  document.getElementById('expense-amount').value = e.amount||'';
+  document.getElementById('expense-date').value = e.date||'';
+  document.getElementById('expense-category').value = e.category||'Software';
+  document.getElementById('expense-supplier').value = e.supplier_id||'';
+  document.getElementById('expense-vendor').value = e.vendor||'';
+  document.getElementById('expense-notes').value = e.notes||'';
+  resetUpload('expense');
+  if(e.receipt_url) showExistingUpload('expense', e.receipt_url);
+  document.getElementById('expense-existing-receipt').value = e.receipt_url||'';
+  openModal('expense-modal');
+}
+
+async function saveExpense(){
+  const id = document.getElementById('expense-edit-id').value;
+  const data = {
+    description: document.getElementById('expense-desc').value.trim(),
+    amount: parseFloat(document.getElementById('expense-amount').value)||0,
+    date: document.getElementById('expense-date').value,
+    category: document.getElementById('expense-category').value,
+    supplier_id: document.getElementById('expense-supplier').value||null,
+    vendor: document.getElementById('expense-vendor').value.trim()||null,
+    notes: document.getElementById('expense-notes').value.trim()||null
+  };
+  if(!data.description||!data.date){ toast('Fill required fields','error'); return; }
+  showLoading();
+  try {
+    const file = document.getElementById('expense-receipt-file').files[0];
+    if(file){
+      const url = await uploadReceipt(file, 'expense-receipts');
+      if(url) data.receipt_url = url;
+    } else {
+      const existing = document.getElementById('expense-existing-receipt').value;
+      if(existing) data.receipt_url = existing;
+    }
+    if(id){
+      await sb.patch('expenses', id, data);
+      const idx = expenses.findIndex(e=>e.id===id);
+      if(idx>=0) Object.assign(expenses[idx], data);
+      toast('Expense updated');
+    } else {
+      const res = await sb.post('expenses', data);
+      if(res[0]) expenses.unshift(res[0]);
+      toast('Expense logged');
+    }
+    closeModal('expense-modal');
+    renderExpensesTable();
+    renderDashboard();
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+async function deleteExpense(id){
+  if(!confirm('Delete this expense?')) return;
+  showLoading();
+  try {
+    await sb.del('expenses', id);
+    expenses = expenses.filter(e=>e.id!==id);
+    renderExpensesTable();
+    renderDashboard();
+    toast('Expense deleted');
+  } catch(e){ toast(e.message,'error'); } finally { hideLoading(); }
+}
+
+// ── GLOBAL SEARCH ─────────────────────────────────────────────────────────────
+function handleSearch(query){
+  const q = query.trim().toLowerCase();
+  const dropdown = document.getElementById('search-dropdown');
+  if(!q){ dropdown.style.display='none'; return; }
+
+  const results = { documents:[], clients:[], suppliers:[], payments:[], expenses:[] };
+
+  documents.forEach(d=>{
+    if((d.doc_number||'').toLowerCase().includes(q)||(d.client_name||'').toLowerCase().includes(q)||(d.notes||'').toLowerCase().includes(q))
+      results.documents.push(d);
+  });
+  clients.forEach(c=>{
+    if((c.name||'').toLowerCase().includes(q)||(c.email||'').toLowerCase().includes(q)||(c.phone||'').toLowerCase().includes(q))
+      results.clients.push(c);
+  });
+  suppliers.forEach(s=>{
+    if((s.name||'').toLowerCase().includes(q)||(s.contact||'').toLowerCase().includes(q)||(s.email||'').toLowerCase().includes(q))
+      results.suppliers.push(s);
+  });
+  payments.forEach(p=>{
+    if((p.client_name||'').toLowerCase().includes(q)||(p.reference||'').toLowerCase().includes(q))
+      results.payments.push(p);
+  });
+  expenses.forEach(e=>{
+    if((e.description||'').toLowerCase().includes(q)||(e.vendor||'').toLowerCase().includes(q))
+      results.expenses.push(e);
+  });
+
+  const total = Object.values(results).reduce((s,a)=>s+a.length,0);
+  if(!total){ dropdown.innerHTML='<div id="search-empty">No results found</div>'; dropdown.style.display='block'; return; }
+
+  let html='';
+  if(results.documents.length){
+    html+=`<div class="search-group-label">Documents</div>`;
+    results.documents.slice(0,5).forEach(d=>{
+      html+=`<div class="search-result" onclick="goPage('${d.type==='invoice'?'invoices':d.type==='quote'?'quotes':d.type==='po'?'pos':'receipts'}');setTimeout(()=>openDocPreview('${d.id}'),200);closeSearch()">
+        <span class="badge badge-${d.type}">${d.type}</span>
+        <div><div class="search-result-main">${esc(d.doc_number)} · ${esc(d.client_name||'—')}</div>
+        <div class="search-result-sub">${$$(d.total)} · ${fmtDate(d.date)}</div></div>
+      </div>`;
+    });
+  }
+  if(results.clients.length){
+    html+=`<div class="search-group-label">Clients</div>`;
+    results.clients.slice(0,3).forEach(c=>{
+      html+=`<div class="search-result" onclick="goPage('clients');closeSearch()">
+        <span class="badge badge-client">client</span>
+        <div><div class="search-result-main">${esc(c.name)}</div>
+        <div class="search-result-sub">${esc(c.email||c.phone||'')}</div></div>
+      </div>`;
+    });
+  }
+  if(results.suppliers.length){
+    html+=`<div class="search-group-label">Suppliers</div>`;
+    results.suppliers.slice(0,3).forEach(s=>{
+      html+=`<div class="search-result" onclick="goPage('suppliers');closeSearch()">
+        <span class="badge badge-supplier">supplier</span>
+        <div><div class="search-result-main">${esc(s.name)}</div>
+        <div class="search-result-sub">${esc(s.email||s.category||'')}</div></div>
+      </div>`;
+    });
+  }
+  if(results.payments.length){
+    html+=`<div class="search-group-label">Payments</div>`;
+    results.payments.slice(0,3).forEach(p=>{
+      html+=`<div class="search-result" onclick="goPage('payments');closeSearch()">
+        <span class="badge badge-payment">payment</span>
+        <div><div class="search-result-main">${esc(p.client_name||'—')}</div>
+        <div class="search-result-sub">${$$(p.amount)} · ${fmtDate(p.date)}</div></div>
+      </div>`;
+    });
+  }
+  if(results.expenses.length){
+    html+=`<div class="search-group-label">Expenses</div>`;
+    results.expenses.slice(0,3).forEach(e=>{
+      html+=`<div class="search-result" onclick="goPage('expenses');closeSearch()">
+        <span class="badge badge-expense">expense</span>
+        <div><div class="search-result-main">${esc(e.description||'—')}</div>
+        <div class="search-result-sub">${$$(e.amount)} · ${fmtDate(e.date)}</div></div>
+      </div>`;
+    });
+  }
+
+  dropdown.innerHTML = html;
+  dropdown.style.display = 'block';
+}
+
+function closeSearch(){
+  document.getElementById('search-dropdown').style.display='none';
+  document.getElementById('search-input').value='';
+}
+
+// ── RECEIPT IMAGE UPLOAD ──────────────────────────────────────────────────────
+async function uploadReceipt(file, bucket){
+  if(file.size > 5*1024*1024){ toast('File too large — max 5MB','error'); return null; }
+  const ext = file.name.split('.').pop();
+  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const url = `${SUPABASE_URL}/storage/v1/object/${bucket}/${filename}`;
+  const r = await fetch(url, {
+    method:'POST',
+    headers:{ 'apikey':SUPABASE_KEY, 'Authorization':`Bearer ${SUPABASE_KEY}`, 'Content-Type': file.type },
+    body: file
+  });
+  if(!r.ok){ const e = await r.text(); throw new Error('Upload failed: '+e); }
+  return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${filename}`;
+}
+
+function previewUpload(type){
+  const file = document.getElementById(`${type}-receipt-file`).files[0];
+  if(!file) return;
+  const area = document.getElementById(`${type}-upload-area`);
+  const preview = document.getElementById(`${type}-upload-preview`);
+  const label = document.getElementById(`${type}-upload-label`);
+  area.classList.add('has-file');
+  label.textContent = file.name;
+  if(file.type.startsWith('image/')){
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.style.display = 'block';
+      preview.innerHTML = `
+        <div class="upload-preview-wrap">
+          <img src="${e.target.result}" class="upload-preview-img" alt="Preview"/>
+          <button class="upload-remove" onclick="resetUpload('${type}')" title="Remove">×</button>
+        </div>`;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.style.display = 'block';
+    preview.innerHTML = `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg);border-radius:var(--radius);font-size:12px;color:var(--muted);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+      ${file.name}
+      <button class="upload-remove" style="position:static;background:none;color:var(--red);width:auto;height:auto;border-radius:0;" onclick="resetUpload('${type}')">×</button>
+    </div>`;
+  }
+}
+
+function showExistingUpload(type, url){
+  const area = document.getElementById(`${type}-upload-area`);
+  const preview = document.getElementById(`${type}-upload-preview`);
+  const label = document.getElementById(`${type}-upload-label`);
+  area.classList.add('has-file');
+  label.textContent = 'Current receipt (click to replace)';
+  const isPDF = url.toLowerCase().includes('.pdf');
+  preview.style.display = 'block';
+  preview.innerHTML = isPDF
+    ? `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg);border-radius:var(--radius);font-size:12px;color:var(--muted);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        PDF Receipt &nbsp;
+        <a href="${url}" target="_blank" style="color:var(--cyan);">View</a>
+        <button class="upload-remove" style="position:static;background:none;color:var(--red);width:auto;height:auto;border-radius:0;" onclick="resetUpload('${type}')">×</button>
+      </div>`
+    : `<div class="upload-preview-wrap">
+        <img src="${url}" class="upload-preview-img" alt="Receipt"/>
+        <button class="upload-remove" onclick="resetUpload('${type}')" title="Remove">×</button>
+      </div>`;
+}
+
+function resetUpload(type){
+  document.getElementById(`${type}-receipt-file`).value = '';
+  document.getElementById(`${type}-upload-area`).classList.remove('has-file');
+  document.getElementById(`${type}-upload-label`).textContent = 'Click to upload or drag & drop';
+  document.getElementById(`${type}-upload-preview`).style.display = 'none';
+  document.getElementById(`${type}-upload-preview`).innerHTML = '';
+  document.getElementById(`${type}-existing-receipt`).value = '';
+}
+
+// ── RECEIPT IMAGES PAGE ───────────────────────────────────────────────────────
+function renderReceiptImages(){
+  // Received from clients — payments with receipt_url
+  const withReceipt = payments.filter(p=>p.receipt_url);
+  const receivedEl = document.getElementById('receipt-images-received');
+  if(withReceipt.length){
+    receivedEl.innerHTML = withReceipt.map(p=>{
+      const isPDF = p.receipt_url.toLowerCase().includes('.pdf');
+      return `<div class="receipt-image-card" onclick="${isPDF?`window.open('${p.receipt_url}','_blank')`:`openLightbox('${p.receipt_url}')`}">
+        ${isPDF
+          ? `<div style="height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--bg);color:var(--muted);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              <span style="font-size:11px;">PDF</span>
+            </div>`
+          : `<img src="${p.receipt_url}" alt="Receipt" loading="lazy"/>`
+        }
+        <div class="receipt-card-body">
+          <div class="receipt-card-name">${esc(p.client_name||'Unknown Client')}</div>
+          <div class="receipt-card-meta">${$$(p.amount)} &nbsp;·&nbsp; ${fmtDate(p.date)}</div>
+          <div class="receipt-card-meta">${esc(p.method||'')}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    receivedEl.innerHTML = '<div class="receipt-empty">No receipt images uploaded yet. Add them when logging payments from clients.</div>';
+  }
+
+  // Paid by you — expenses with receipt_url
+  const withExpReceipt = expenses.filter(e=>e.receipt_url);
+  const paidEl = document.getElementById('receipt-images-paid');
+  if(withExpReceipt.length){
+    paidEl.innerHTML = withExpReceipt.map(e=>{
+      const isPDF = e.receipt_url.toLowerCase().includes('.pdf');
+      return `<div class="receipt-image-card" onclick="${isPDF?`window.open('${e.receipt_url}','_blank')`:`openLightbox('${e.receipt_url}')`}">
+        ${isPDF
+          ? `<div style="height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--bg);color:var(--muted);">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+              <span style="font-size:11px;">PDF</span>
+            </div>`
+          : `<img src="${e.receipt_url}" alt="Receipt" loading="lazy"/>`
+        }
+        <div class="receipt-card-body">
+          <div class="receipt-card-name">${esc(e.description||'Expense')}</div>
+          <div class="receipt-card-meta">${$$(e.amount)} &nbsp;·&nbsp; ${fmtDate(e.date)}</div>
+          <div class="receipt-card-meta">${esc(e.vendor||(suppliers.find(s=>s.id===e.supplier_id)?.name)||e.category||'')}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    paidEl.innerHTML = '<div class="receipt-empty">No receipt images uploaded yet. Add them when logging expenses.</div>';
+  }
+}
+
+// ── LIGHTBOX ──────────────────────────────────────────────────────────────────
+function openLightbox(url){
+  document.getElementById('lightbox-img').src = url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+
+// ── PWA ───────────────────────────────────────────────────────────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn('SW:',e)));
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadAll();
+</script>
+</body>
+</html>
+/* LAYOUT */
+#app{display:flex;height:100vh;position:relative;z-index:1;}
+
+/* SIDEBAR */
+#sidebar{
+  width:220px;min-width:220px;background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;transition:transform .25s;
+}
+#sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+#sidebar-brand .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+#sidebar-brand .logo-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+#sidebar nav{flex:1;padding:10px 0;}
+.nav-group{padding:12px 18px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;
+  font-size:13px;color:var(--muted);transition:all .15s;border-left:2px solid transparent;
+  user-select:none;
+}
+.nav-item:hover{color:var(--text);background:#ffffff06;}
+.nav-item.active{color:var(--cyan);border-left-color:var(--cyan);background:#00d4ff10;}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;}
+#sidebar-bottom{padding:12px;border-top:1px solid var(--border);}
+
+/* MAIN */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+/* TOPBAR */
+#topbar{
+  height:56px;border-bottom:1px solid var(--border);background:var(--surface);
+  display:flex;align-items:center;gap:12px;padding:0 20px;flex-shrink:0;
+}
+#menu-toggle{display:none;background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;}
+#topbar-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;flex:1;}
+
+/* SEARCH */
+#search-wrap{position:relative;}
+#search-input{
+  background:var(--bg);border:1px solid var(--border);color:var(--text);
+  padding:7px 12px 7px 34px;border-radius:var(--radius);font-size:13px;width:220px;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+}
+#search-input:focus{border-color:var(--cyan);}
+#search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+#search-icon svg{width:14px;height:14px;}
+#search-dropdown{
+  position:absolute;top:calc(100% + 6px);left:0;width:360px;background:var(--surface2);
+  border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:0 8px 32px #00000066;z-index:1000;display:none;max-height:420px;overflow-y:auto;
+}
+.search-group-label{padding:8px 14px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;background:var(--surface);}
+.search-result{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;
+  border-bottom:1px solid var(--border);transition:background .15s;
+}
+.search-result:hover{background:#ffffff08;}
+.search-result:last-child{border-bottom:none;}
+.search-result-main{font-size:13px;color:var(--text);}
+.search-result-sub{font-size:11px;color:var(--muted);}
+#search-empty{padding:16px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* CONTENT */
+#content{flex:1;overflow-y:auto;padding:24px;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;}
+.page-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;
+  border:none;transition:all .15s;user-select:none;
+}
+.btn-primary{background:var(--grad);color:#fff;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--text);border-color:#ffffff33;}
+.btn-danger{background:#ff446620;color:var(--red);border:1px solid #ff446640;}
+.btn-danger:hover{background:#ff446630;}
+.btn-sm{padding:5px 10px;font-size:12px;}
+.btn-icon{padding:7px;background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-icon:hover{color:var(--text);border-color:#ffffff33;}
+.btn svg{width:14px;height:14px;}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.stat-value{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);}
+.stat-value.cyan{color:var(--cyan);}
+.stat-value.violet{color:var(--violet);}
+.stat-value.green{color:var(--green);}
+.stat-value.amber{color:var(--amber);}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* TABLE */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;}
+.table-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.table-header h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:10px 18px;text-align:left;border-bottom:1px solid var(--border);font-weight:600;}
+.tbl td{padding:12px 18px;font-size:13px;border-bottom:1px solid #ffffff08;vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#ffffff04;}
+.tbl .actions{display:flex;gap:6px;justify-content:flex-end;}
+.tbl .total-row td{font-weight:600;color:var(--cyan);background:#00d4ff08;border-top:1px solid var(--border);}
+.empty-state{padding:40px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* BADGES */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+}
+.badge::before{content:'•';font-size:14px;line-height:1;}
+.badge-paid{background:#00e5a015;color:var(--green);}
+.badge-unpaid{background:#ffb02015;color:var(--amber);}
+.badge-overdue{background:#ff446615;color:var(--red);}
+.badge-partial{background:#00d4ff15;color:var(--cyan);}
+.badge-active{background:#8b5cf615;color:var(--violet);}
+.badge-invoice{background:#00d4ff15;color:var(--cyan);}
+.badge-quote{background:#8b5cf615;color:var(--violet);}
+.badge-po{background:#ffb02015;color:var(--amber);}
+.badge-receipt{background:#00e5a015;color:var(--green);}
+.badge-client{background:#00d4ff15;color:var(--cyan);}
+.badge-supplier{background:#8b5cf615;color:var(--violet);}
+.badge-payment{background:#00e5a015;color:var(--green);}
+.badge-expense{background:#ff446615;color:var(--red);}
+
+/* MODALS */
+.modal-backdrop{
+  position:fixed;inset:0;background:#00000088;z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-backdrop.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);
+  width:100%;max-width:600px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;
+  transform:translateY(12px);transition:transform .2s;
+}
+.modal-backdrop.open .modal{transform:none;}
+.modal-lg{max-width:800px;}
+.modal-xl{max-width:1000px;}
+.modal-sm{max-width:420px;}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.modal-header h3{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;}
+.modal-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:20px;overflow-y:auto;flex:1;}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
+
+/* FORMS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.form-full{grid-column:1/-1;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:12px;color:var(--muted);font-weight:500;}
+.form-control{
+  background:var(--bg);border:1px solid var(--border);color:var(--text);
+  padding:9px 12px;border-radius:var(--radius);font-size:13px;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+  width:100%;
+}
+.form-control:focus{border-color:var(--cyan);}
+.form-control option{background:var(--surface2);}
+textarea.form-control{resize:vertical;min-height:72px;}
+.form-section{margin-bottom:18px;}
+.form-section-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+
+/* LINE ITEMS */
+#line-items-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.line-item-row{display:grid;grid-template-columns:1fr 80px 110px 90px 32px;gap:6px;align-items:center;}
+.line-item-row .form-control{padding:7px 10px;}
+.line-item-total{font-size:13px;color:var(--cyan);font-weight:600;text-align:right;}
+.line-item-remove{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;align-items:center;border-radius:6px;}
+.line-item-remove:hover{color:var(--red);background:#ff446615;}
+#line-items-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.service-chip{
+  padding:4px 10px;background:#00d4ff15;border:1px solid #00d4ff33;color:var(--cyan);
+  border-radius:20px;font-size:11px;cursor:pointer;transition:all .15s;
+}
+.service-chip:hover{background:#00d4ff25;transform:translateY(-1px);}
+
+/* TOTALS PREVIEW */
+#totals-preview{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:10px;}
+.totals-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;}
+.totals-row.discount{color:var(--amber);}
+.totals-row.total{font-weight:700;font-size:15px;color:var(--cyan);border-top:1px solid var(--border);margin-top:6px;padding-top:8px;}
+
+/* DISCOUNT ROW */
+#discount-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+#discount-input-wrap{display:flex;align-items:center;gap:6px;}
+
+/* DOC PREVIEW */
+#doc-preview-content{background:#fff;border-radius:var(--radius);padding:32px;color:#111;font-family:'DM Sans',sans-serif;}
+.doc-preview-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.doc-preview-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;background:linear-gradient(135deg,#00d4ff,#8b5cf6,#e040fb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.doc-preview-type{font-size:24px;font-family:'Syne',sans-serif;font-weight:800;color:#333;text-transform:uppercase;}
+.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;font-size:13px;}
+.doc-meta-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.doc-items-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+.doc-items-table th{background:#f5f5f5;padding:8px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;color:#666;}
+.doc-items-table td{padding:10px 12px;border-bottom:1px solid #eee;}
+.doc-totals{margin-left:auto;width:240px;font-size:13px;}
+.doc-totals-row{display:flex;justify-content:space-between;padding:3px 0;}
+.doc-totals-total{font-weight:700;font-size:16px;border-top:2px solid #333;padding-top:6px;margin-top:4px;}
+.doc-footer{margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#888;text-align:center;}
+.doc-payment-history{margin-top:16px;padding:12px;background:#f9f9f9;border-radius:6px;}
+.doc-payment-history h4{font-size:12px;font-weight:600;margin-bottom:8px;color:#333;}
+.doc-payment-bar{height:8px;background:#e5e5e5;border-radius:4px;margin-top:10px;overflow:hidden;}
+.doc-payment-bar-fill{height:100%;background:linear-gradient(90deg,#00d4ff,#8b5cf6);border-radius:4px;transition:width .5s;}
+
+/* P&L */
+.pl-period-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.pl-period-btn{padding:6px 12px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:var(--radius);font-size:12px;cursor:pointer;transition:all .15s;}
+.pl-period-btn.active{background:#00d4ff15;border-color:var(--cyan);color:var(--cyan);}
+.pl-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.pl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;}
+.pl-card-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.pl-card-value{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;}
+
+/* PAYMENT BAR (invoice rows) */
+.payment-progress{height:4px;background:#ffffff15;border-radius:2px;margin-top:4px;overflow:hidden;width:80px;}
+.payment-progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet));border-radius:2px;}
+
+/* TOAST */
+#toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{
+  padding:12px 18px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);font-size:13px;color:var(--text);
+  box-shadow:0 4px 20px #00000066;max-width:320px;
+  animation:toast-in .25s ease;
+}
+.toast.error{border-left:3px solid var(--red);color:var(--red);}
+.toast.success{border-left:3px solid var(--green);}
+@keyframes toast-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+/* LOADING */
+#loading-overlay{
+  position:fixed;inset:0;background:#08080ecc;z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+#loading-overlay.show{opacity:1;pointer-events:all;}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* MOBILE BOTTOM NAV */
+#mobile-nav{
+  display:none;height:56px;background:var(--surface);border-top:1px solid var(--border);
+  flex-shrink:0;overflow-x:auto;
+}
+#mobile-nav-inner{display:flex;height:100%;min-width:100%;}
+.mobile-nav-item{
+  flex:1;min-width:60px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;cursor:pointer;color:var(--muted);font-size:9px;
+  padding:4px;transition:color .15s;user-select:none;
+}
+.mobile-nav-item.active{color:var(--cyan);}
+.mobile-nav-item svg{width:18px;height:18px;}
+#sidebar-overlay{position:fixed;inset:0;background:#000000aa;z-index:99;display:none;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  #sidebar{position:fixed;left:0;top:0;bottom:0;z-index:100;transform:translateX(-100%);width:240px;}
+  #sidebar.open{transform:none;}
+  #sidebar-overlay.show{display:block;}
+  #menu-toggle{display:block;}
+  #search-input{width:140px;}
+  #search-dropdown{width:280px;right:0;left:auto;}
+  #mobile-nav{display:flex;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-grid.cols-3{grid-template-columns:1fr 1fr;}
+  .pl-summary{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  #content{padding:16px;}
+  .line-item-row{grid-template-columns:1fr 60px 90px 70px 28px;}
+}
+
+/* SECTIONS */
+.section-divider{height:1px;background:var(--border);margin:20px 0;}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .info-item{background:var(--bg);border-radius:var(--radius);padding:12px;}
 .info-label{font-size:11px;color:var(--muted);margin-bottom:3px;}
