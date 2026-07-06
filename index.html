@@ -632,9 +632,9 @@ textarea.form-control{resize:vertical;min-height:72px;}
           <div class="page-title">Pricing Sheet</div>
           <div class="page-actions">
             <button class="btn btn-ghost" onclick="clearPricingSheet()">Clear All</button>
-            <button class="btn btn-primary" onclick="pricingToInvoice()">
+            <button class="btn btn-primary" onclick="pricingToQuotes()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-              Create Invoice from Selection
+              Create Quote from Selection
             </button>
           </div>
         </div>
@@ -3239,8 +3239,8 @@ const TDC_PACKAGES = [
     yearly: 1000
   },
   {
-    id:'growth',
-    name:'Growth',
+    id:'Accelerate',
+    name:'Acclerate',
     desc:'Expanded digital presence with ongoing support.',
     setup: 2000,
     monthly: 200,
@@ -3277,9 +3277,9 @@ const TDC_PRICING_ROWS = [
   { id:'launch-setup',   group:'Launch',   label:'Launch — Setup / Build Fee', type:'setup',   setup:500,  monthly:null, yearly:null },
   { id:'launch-monthly', group:'Launch',   label:'Launch — Monthly Retainer',  type:'monthly', setup:null, monthly:100,  yearly:null },
   { id:'launch-yearly',  group:'Launch',   label:'Launch — Yearly Retainer',   type:'yearly',  setup:null, monthly:null, yearly:1000 },
-  { id:'growth-setup',   group:'Growth',   label:'Growth — Setup / Build Fee', type:'setup',   setup:2000, monthly:null, yearly:null },
-  { id:'growth-monthly', group:'Growth',   label:'Growth — Monthly Retainer',  type:'monthly', setup:null, monthly:200,  yearly:null },
-  { id:'growth-yearly',  group:'Growth',   label:'Growth — Yearly Retainer',   type:'yearly',  setup:null, monthly:null, yearly:1800 },
+  { id:'accelerate-setup',   group:'Accelerate',   label:'Accelerate — Setup / Build Fee', type:'setup',   setup:2000, monthly:null, yearly:null },
+  { id:'accelerate-monthly', group:'Accelerate',   label:'Accelerate — Monthly Retainer',  type:'monthly', setup:null, monthly:200,  yearly:null },
+  { id:'accelerate-yearly',  group:'Accelerate',   label:'Accelerate — Yearly Retainer',   type:'yearly',  setup:null, monthly:null, yearly:1800 },
   { id:'empire-setup',   group:'Empire',   label:'Empire — Setup / Build Fee', type:'setup',   setup:3500, monthly:null, yearly:null },
   { id:'empire-monthly', group:'Empire',   label:'Empire — Monthly Retainer',  type:'monthly', setup:null, monthly:250,  yearly:null },
   { id:'empire-yearly',  group:'Empire',   label:'Empire — Yearly Retainer',   type:'yearly',  setup:null, monthly:null, yearly:2000 },
